@@ -1,0 +1,40 @@
+# Compiled output
+/timetable-frontend/dist
+/timetable-frontend/tmp
+/timetable-frontend/out-tsc
+/timetable-frontend/bazel-out
+
+# Node
+/timetable-frontend/node_modules
+/timetable-frontend/npm-debug.log
+/timetable-frontend/yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+/timetable-frontend/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/timetable-frontend/.angular/cache
+/timetable-frontend/.sass-cache/
+/timetable-frontend/connect.lock
+/timetable-frontend/coverage
+/timetable-frontend/libpeerconnection.log
+/timetable-frontend/testem.log
+/timetable-frontend/typings
+
+# System files
+.DS_Store
+Thumbs.db
