@@ -19,7 +19,7 @@
 *.sublime-workspace
 
 # Visual Studio Code
-/timetable-frontend/.vscode/*
+/timetable-frontend/.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
