@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'forms-signIn',
+    selector: 'pages-signIn',
     standalone:true,
     imports: [ReactiveFormsModule],
     templateUrl: './forms.signIn.html',
