@@ -1,10 +1,16 @@
-<header class="custom-header">
+<ng-template #vHeader *ngIf="vHeader">
+  <header class="custom-header">
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
-          <h1 class="header-title">Your Header Title</h1>
+          <ul class="header-links">
+            <li><a href="#link1">Link 1</a></li>
+            <li><a href="#link2">Link 2</a></li>
+            <li><a href="#link3">Link 3</a></li>
+            <li><a href="#link4">Link 4</a></li>
+          </ul>
         </div>
       </div>
     </div>
-</header>
-  
+  </header>
+</ng-template>
