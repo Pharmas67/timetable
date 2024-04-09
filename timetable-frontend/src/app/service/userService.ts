@@ -19,18 +19,13 @@ export class userService {
         password2: ''
     }
 
-
-    async createUser(obj: Object): Promise<Object | undefined> {
-        axios.post('http://localhost/mysql/ajax/register.php',obj)
-            .then(response => {
-                console.log(response.data);
-                this.userData!.username = response.data['username'];
-                this.userData!.email = response.data['email'];
-                
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        return this.userData;
+    async createUser(obj: Object): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/register.php',obj);
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
     }
 }

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { formSignIn } from './forms/forms.signIn';
 import { formSignUp } from './forms/forms.signUp';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
     {
@@ -15,6 +16,6 @@ export const routes: Routes = [
     },
     {
         path: 'home/:id',
-        component: formSignIn
+        component: HomeComponent
     }
 ];

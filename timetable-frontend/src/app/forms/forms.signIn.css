@@ -34,3 +34,14 @@
 .btn-sign-in:hover {
     background-color: #0056b3;
 }
+
+.warning-container {
+    background-color: #ffcccc; /* Light red background */
+    padding: 10px; /* Add padding for better appearance */
+    border-radius: 5px; /* Add rounded corners */
+    margin-bottom: 10px; /* Add some space below the warning message */
+}
+
+.warning-message {
+    color: #ff0000; /* Red text color */
+}

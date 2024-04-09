@@ -1,26 +1,22 @@
 <?php
 
-function createUser($conn,$username,$email,$password,$password2){
-    $sql = 'INSERT INTO `users` (`username`,`email`,`password`) VALUES (?,?,?);';
+function createUser($conn,$username,$email,$password){
+    $sql = 'INSERT INTO `users` (`id`,`username`,`email`,`password`) VALUES (?,?,?,?);';
     $stmt = $conn->stmt_init();
     if(!$stmt->prepare($sql)){
         return 'sql-error';
     }
-    
+
     if(!(userExists($conn,$username,$username) === false)){
-        return 'invalid username';
+        return 'invalidUsername';
     }
 
     if(!(userExists($conn,$email,$email) === false)){
-        return 'invalid email';
-    }
-
-    if($password !== $password2){
-        return 'password dont match';
+        return 'invalidEmail';
     }
 
     $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
-    $stmt->bind('sss',$username,$email,$hashedpwd);
+    $stmt->bind_param('ssss',uniqid(),$username,$email,$hashedpwd);
     $stmt->execute();
     $stmt->close();
     return 'UserCreated';
@@ -29,11 +25,11 @@ function createUser($conn,$username,$email,$password,$password2){
 function userExists($conn,$username,$email){
     $sql = 'SELECT * FROM `users` WHERE `username` = ? OR `email` = ?;';
     $stmt = $conn->stmt_init();
-    if(!$stmt_prepare($sql)){
+    if(!$stmt->prepare($sql)){
         return false;
     }
 
-    $stmt->bind('ss',$username,$email);
+    $stmt->bind_param('ss',$username,$email);
     $stmt->execute();
     $obj = $stmt->get_result();
 

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
 import { user } from '../interfaces/user';
 import { userService } from '../service/userService';
-import { exit } from 'process';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -23,12 +22,12 @@ export class formSignIn {
         if(this.signInForm.value.email === ''){
             this.warning = true;
             this.warningMessage = 'No email is choosen';
-            exit;
+            
         }
         if(this.signInForm.value.password === ''){
             this.warning = true;
             this.warningMessage = 'No Password choosen';
-            exit;
+            
         }
        
     }
