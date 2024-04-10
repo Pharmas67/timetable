@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
-require_once '../../rootHelper.php';
+require_once '../../constants.php';
 require_once (ROOT . "/mysql/database/conn.php");
 require_once (ROOT . "/mysql/database/functions.php");
 

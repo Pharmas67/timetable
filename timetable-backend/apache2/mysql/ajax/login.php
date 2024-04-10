@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: *");
 
 use Firebase\JWT\JWT;
 
-require_once '../../rootHelper.php';
+require_once '../../constants.php';
 require_once (ROOT . '/vendor/autoload.php');
 require_once (ROOT . '/mysql/database/conn.php');
 require_once (ROOT . '/mysql/database/functions.php');
@@ -18,6 +18,17 @@ require_once (ROOT . '/mysql/database/functions.php');
 $json_str = file_get_contents('php://input');
 
 $json_arr = json_decode($json_str,true);
+
+if(loginUser($conn,$json_arr['email'],$json_arr['password']) === false){
+    return print_r(json_encode('invalidUsernameOrPassword'));
+}
+
+$user = displayUser($conn,$json_arr['email'],$json_arr['email']);
+$now = new DateTimeImmutable()
+
+$key = 
+
+$now = 
 
 print_r(json_encode(displayUser($conn,$json_arr['email'],$json_arr['email'])));
 exit();
