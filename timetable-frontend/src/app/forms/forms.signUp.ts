@@ -1,4 +1,4 @@
-import { Component,Directive, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
 import { userService } from '../service/userService';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ export class formSignUp {
 
     warningMessage: string = '';
     warning: boolean = false;
-    newUser: {
+    userObj: {
         username: string,
         email: string,
         password: string,
@@ -27,7 +27,6 @@ export class formSignUp {
         password: '',
         password2: ''
       };
-    secondUser: any;
 
     async signUp() {                        
         this.warning = false;
@@ -52,12 +51,12 @@ export class formSignUp {
             this.warningMessage = 'Please confirm your Password';
             return;
         }
-        this.newUser.username = this.signUpForm.value.username || '';
-        this.newUser.email = this.signUpForm.value.email || '';
-        this.newUser.password = this.signUpForm.value.password || '';
-        this.newUser.password2 = this.signUpForm.value.password2 || '';
+        this.userObj.username = this.signUpForm.value.username || '';
+        this.userObj.email = this.signUpForm.value.email || '';
+        this.userObj.password = this.signUpForm.value.password || '';
+        this.userObj.password2 = this.signUpForm.value.password2 || '';
         
-        const response = await this.userService.createUser(this.newUser);
+        const response = await this.userService.createUser(this.userObj);
         if(response == 'Passwords dont match'){
             this.warning = true;
             this.warningMessage = 'Passwords dont match, please verify they match';

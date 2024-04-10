@@ -1,7 +1,7 @@
 <div class="container">
     <div class="sign-in-form">
       <h2 class="form-title">Sign In</h2>
-      <form (submit)="signIn" [formGroup]="signInForm">
+      <form (submit)="signIn()" [formGroup]="signInForm">
         <div class="form-group">
           <label for="email" class="form-control-label">Email address or Username</label>
           <input type="email" class="form-control" id="email" placeholder="Enter email" formControlName="email">

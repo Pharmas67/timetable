@@ -28,4 +28,14 @@ export class userService {
             throw e;
         }
     }
+
+    async loginUser(obj: Object): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/login.php',obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
 }

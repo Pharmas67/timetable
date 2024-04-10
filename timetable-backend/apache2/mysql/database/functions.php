@@ -4,7 +4,7 @@ function createUser($conn,$username,$email,$password){
     $sql = 'INSERT INTO `users` (`id`,`username`,`email`,`password`) VALUES (?,?,?,?);';
     $stmt = $conn->stmt_init();
     if(!$stmt->prepare($sql)){
-        return 'sql-error';
+        return 'Something went wrong';
     }
 
     if(!(userExists($conn,$username,$username) === false)){
@@ -43,15 +43,34 @@ function userExists($conn,$username,$email){
 function loginUser($conn,$username,$password){
     $userExists = userExists($conn,$username,$username);
     if($userExists === false){
-        return 'invalid username or email';
+        return false;
     }
 
     if(!(password_verify($password, $userExists['password']))){
-        return 'invalid password';
+        return false;
     }
     
     return true;
 }
 
+function displayUser($conn,$username,$email){
+    $sql = 'SELECT `id` ,`username`,`email` FROM `users` WHERE `username` = ? OR `email` = ?;';
+    $stmt = $conn->stmt_init();
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+    $stmt->bind_param('ss',$username,$email);
+    $stmt->execute();
+    $obj = $stmt->get_result();
+    if($row = $obj->fetch_assoc()){
+        $user = new stdClass();
+        $user->id = $row['id'];
+        $user->username = $row['username'];
+        $user->email = $row['email'];
+        return $user;
+    }
+    $stmt->close();
+    return false;
+}
 
 ?>
