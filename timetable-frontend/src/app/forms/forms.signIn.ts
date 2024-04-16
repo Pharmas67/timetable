@@ -41,7 +41,14 @@ export class formSignIn {
         this.userObj.password = this.signInForm.value.password || '';
 
         const response = await this.userService.loginUser(this.userObj);
-        console.log(response);
+        if(response == "invalidUsernameOrPassword"){
+            this.warning = true;
+            this.warningMessage = 'Invalid Username or Password';
+            return;
+        }
+        localStorage.setItem('validUser',"true");
+        localStorage.setItem('userToken',response);
+        this.router.navigate(['/home']);
         return;
     }
 

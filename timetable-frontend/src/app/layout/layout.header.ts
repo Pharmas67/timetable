@@ -6,21 +6,22 @@ import { Location } from '@angular/common';
     selector: 'app-header',
     standalone: true,
     imports: [CommonModule],
-    templateUrl: './layout.header.html',
-    styleUrls: ['./layout.header.css']
+    templateUrl: './layout.header.html'
 })
 export class header implements OnInit {
     constructor(private location: Location) { }
 
-    vHeader: boolean = true;
-    
+    visible: boolean = false;
+
     getCurrentUrl():string {
         return this.location.path();
     }
+
     ngOnInit(): void {
         const currentUrl = this.getCurrentUrl();
-        if(currentUrl === 'http://localhost:4200/' || currentUrl === 'http://localhost:4200/'){
-            this.vHeader = false;
+        
+        if(!(currentUrl === '' || currentUrl === '/signup')){
+            this.visible = true;
         }
     }
 }

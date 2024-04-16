@@ -135,15 +135,40 @@ img {
 }
 
 /* Header */
-.header {
-    background-color: #f8f9fa; /* Light gray background */
+.header,
+.custom-header {
+    background-color: #e9f5fc; /* Light blue background */
     padding: 20px 0;
-    border-bottom: 1px solid #dee2e6; /* Lighter border */
+    border: none; /* Remove border */
 }
 
-.header-title {
-    color: #333; /* Dark gray text */
-    font-weight: bold;
+.header-links,
+.custom-header .header-links {
+    list-style: none;
+    padding: 0;
+}
+
+.header-links li,
+.custom-header .header-links li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.header-links li:last-child,
+.custom-header .header-links li:last-child {
+    margin-right: 0;
+}
+
+.header-links li a,
+.custom-header .header-links li a {
+    color: #0275d8; /* Dark blue text */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth transition */
+}
+
+.header-links li a:hover,
+.custom-header .header-links li a:hover {
+    color: #0056b3; /* Darker blue color on hover */
 }
 
 /* Footer */

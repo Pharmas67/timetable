@@ -13,22 +13,30 @@ require_once '../../constants.php';
 require_once (ROOT . '/vendor/autoload.php');
 require_once (ROOT . '/mysql/database/conn.php');
 require_once (ROOT . '/mysql/database/functions.php');
-
+require_once '../../../vault/rsaKey.php';
 
 $json_str = file_get_contents('php://input');
 
-$json_arr = json_decode($json_str,true);
+$json_obj = json_decode($json_str);
 
-if(loginUser($conn,$json_arr['email'],$json_arr['password']) === false){
+if(loginUser($conn,$json_obj->email,$json_obj->password) === false){
     return print_r(json_encode('invalidUsernameOrPassword'));
 }
 
-$user = displayUser($conn,$json_arr['email'],$json_arr['email']);
-$now = new DateTimeImmutable()
+$user = displayUser($conn,$json_obj->email,$json_obj->email);
+$time = new DateTimeImmutable();
 
-$key = 
+$payload = [
+    'iss' => 'http://localhost:4200/',
+    'iat' => $time->getTimestamp(),
+    'nbf' => $time->getTimestamp(),
+    'exp' => $time->modify('+10 minutes')->getTimestamp(),
+    'id' => $user->id,
+    'email' => $user->email,
+    'username' => $user->username
+];
 
-$now = 
+$jwt = JWT::encode($payload,$privateKey, 'RS256');
 
-print_r(json_encode(displayUser($conn,$json_arr['email'],$json_arr['email'])));
+print_r(json_encode($jwt));
 exit();
