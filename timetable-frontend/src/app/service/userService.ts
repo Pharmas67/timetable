@@ -38,4 +38,14 @@ export class userService {
             throw e;
         }
     }
+
+    async getUser(jwt: String): Promise<Object> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/profile.php',jwt);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
 }

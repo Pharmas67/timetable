@@ -21,6 +21,7 @@
     "@angular/platform-server": "^17.2.0",
     "@angular/router": "^17.2.0",
     "@angular/ssr": "^17.2.3",
+    "@fullcalendar/angular": "^6.1.10",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "express": "^4.18.2",

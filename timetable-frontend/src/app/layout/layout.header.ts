@@ -1,27 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router, NavigationEnd, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule,RouterLink],
     templateUrl: './layout.header.html'
 })
 export class header implements OnInit {
-    constructor(private location: Location) { }
+    constructor(private router: Router) { }
 
     visible: boolean = false;
 
-    getCurrentUrl():string {
+    /*getCurrentUrl():string {
         return this.location.path();
-    }
+    } */
 
     ngOnInit(): void {
-        const currentUrl = this.getCurrentUrl();
-        
-        if(!(currentUrl === '' || currentUrl === '/signup')){
-            this.visible = true;
-        }
+        this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+              const currentUrl = this.router.url;
+    
+              this.visible = !(currentUrl === '/' || currentUrl === '/signup');
+            
+            }
+          });
     }
 }
