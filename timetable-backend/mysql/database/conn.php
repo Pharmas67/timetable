@@ -1,6 +1,8 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-$conn = new mysqli('localhost','root','3t0LXeOUStar', 'timetable');
+$conn = new mysqli('localhost','admin','3t0LXeOUStar', 'timetable');
 
 if($conn->connect_error){
     die("Connection failed: " . $conn->connect_error);

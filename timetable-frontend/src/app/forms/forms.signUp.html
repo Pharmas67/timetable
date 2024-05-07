@@ -1,37 +1,80 @@
-<div class="container">
-    <div class="sign-up-form">
-      <h2 class="form-title">Sign Up</h2>
-      <form (submit)="signUp()" [formGroup]="signUpForm">
-        <div class="form-group">
-          <label for="username" class="form-control-label">Username</label>
-          <br>
-          <input type="text" class="form-control" id="username" placeholder="Enter username" formControlName="username">
-        </div>
-        <div class="form-group">
-            <label for="email" class="form-control-label">Email address or Username</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" formControlName="email">
-          </div>
-        <div class="form-group">
-          <label for="password" class="form-control-label">Password</label>
-          <br>
-          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
-        </div>
-        <div class="form-group">
-            <label for="password2" class="form-control-label">Confirm Password</label>
-            <br>
-            <input type="password" class="form-control" id="password2" placeholder="Confirm Password" formControlName="password2">
-          </div>
-        <button type="submit" class="btn btn-sign-up">Sign Up</button>
-      </form>
-      <br>
-      <div class="warning-container" *ngIf="warning">
-        <div class="warning-message">
-            {{ warningMessage }}
-        </div>
-        <br>
-      </div>
-      <div class="form-group">
-        <a [routerLink]="['/']" class="signIn">Click here to Log In</a>
-      </div>
-    </div>
+<!--
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-white">
+  <body class="h-full">
+  ```
+-->
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <img class="mx-auto h-10 w-auto" src="../../assets/logo.png" alt="Your Company">
+    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create your Account here</h2>
   </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" [formGroup]="signUpForm" (submit)="signUp()">
+      <div>
+        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+        <div class="mt-2">
+          <input id="username" formControlName="username" name="username" type="text" autocomplete="username" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+        <div class="mt-2">
+          <input id="email" formControlName="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          
+        </div>
+        <div class="mt-2">
+          <input id="password" formControlName="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+          
+        </div>
+        <div class="mt-2">
+          <input id="password2" formControlName="password2" name="password2" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+      </div>
+    </form>
+    <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+      <div class="warning-message">
+          {{ warningMessage }}
+      </div>
+      <br>
+    </div>
+    <p class="mt-10 text-center text-sm text-gray-500">
+      Not a member?
+      <a [routerLink]="['/']" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Register here</a>
+    </p>
+  </div>
+</div>

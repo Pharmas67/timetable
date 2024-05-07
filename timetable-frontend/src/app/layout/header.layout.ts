@@ -6,16 +6,12 @@ import { Router, NavigationEnd, RouterLink } from '@angular/router';
     selector: 'app-header',
     standalone: true,
     imports: [CommonModule,RouterLink],
-    templateUrl: './layout.header.html'
+    templateUrl: './header.layout.html'
 })
 export class header implements OnInit {
     constructor(private router: Router) { }
 
     visible: boolean = false;
-
-    /*getCurrentUrl():string {
-        return this.location.path();
-    } */
 
     ngOnInit(): void {
         this.router.events.subscribe(event => {
@@ -26,5 +22,10 @@ export class header implements OnInit {
             
             }
           });
+    }
+
+    logOut(): void {
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("validUser");
     }
 }

@@ -1,1 +1,16 @@
-<p>calendar works!</p>
+<div id="calendar">
+  <div>
+    <span class="prev" (click)="prevMonth()">&#10094;</span>
+    <span>{{ currentMonth }} {{ currentYear }}</span>
+    <span class="next" (click)="nextMonth()">&#10095;</span>
+  </div>
+  <br>
+  <table>
+    <tr>
+      <th *ngFor="let day of daysOfWeek">{{ day }}</th>
+    </tr>
+    <tr *ngFor="let week of calendar">
+      <td *ngFor="let day of week" (click)="selectDate(day)">{{ day }}</td>
+    </tr>
+  </table>
+</div>

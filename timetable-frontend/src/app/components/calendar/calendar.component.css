@@ -1,62 +1,29 @@
-/* Smooth Home Component CSS */
+#calendar {
+  font-family: Arial, sans-serif;
+}
 
-/* Container */
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-  }
-  
-  /* Jumbotron */
-  .jumbotron {
-    background-color: #e9f5fc; /* Light blue background */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .jumbotron h1 {
-    color: #0275d8; /* Dark blue text */
-  }
-  
-  /* Card */
-  .card {
-    background-color: #fff; /* White background */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  /* Calendar */
-  .fullcalendar-container {
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  /* Calendar Header */
-  .fc-header-toolbar {
-    background-color: #e9f5fc; /* Light blue background */
-  }
-  
-  /* Calendar Day */
-  .fc-daygrid-day {
-    border: none; /* Remove border */
-  }
-  
-  /* Calendar Event */
-  .fc-event {
-    background-color: #0275d8; /* Dark blue */
-    color: #fff; /* White text */
-    border: none; /* Remove border */
-    border-radius: 5px;
-  }
-  
-  /* Calendar Event Hover */
-  .fc-event:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-  
+#calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#calendar th {
+  text-align: center;
+}
+
+#calendar th,
+#calendar td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+#calendar td {
+  text-align: center;
+  cursor: pointer;
+}
+
+#calendar .prev,
+#calendar .next {
+  cursor: pointer;
+  float: left;
+}
