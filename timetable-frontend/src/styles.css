@@ -185,3 +185,6 @@ img {
 .footer-text {
     color: #333; /* Dark gray text */
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

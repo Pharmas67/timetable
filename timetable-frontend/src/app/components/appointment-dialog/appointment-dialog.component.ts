@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-appointment-dialog',
   standalone: true,
   imports: [],
-  templateUrl: './appointment-dialog.component.html',
-  styleUrl: './appointment-dialog.component.css'
+  templateUrl: './appointment-dialog.component.html'
 })
 export class AppointmentDialogComponent {
 

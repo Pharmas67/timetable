@@ -2,15 +2,14 @@ import { Routes } from '@angular/router';
 import { formSignIn } from './forms/forms.signIn';
 import { formSignUp } from './forms/forms.signUp';
 import { HomeComponent } from './components/home/home.component';
-import { title } from 'process';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AppointmentDialogComponent } from './components/appointment-dialog/appointment-dialog.component';
 
 export const routes: Routes = [
     {    
         path: '',
         component: formSignIn,
-        pathMatch: 'full',
-        data: {title: "Sing In"}
+        title: "Sign In"
     },
     {
         path: 'signup',
@@ -20,16 +19,16 @@ export const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
-        data: {title: "Home"}
+        title: "Home"
     },
     {
         path: 'profile',
         component: ProfileComponent,
-        data: {title: "Profile"}
+        title: "Profile"
     },
     {
         path: 'history',
-        component: HomeComponent,
-        data: {title: "History"}
+        component: AppointmentDialogComponent,
+        title: "History"
     },
 ];
