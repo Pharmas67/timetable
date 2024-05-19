@@ -1,0 +1,24 @@
+<?php
+
+header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: *");
+
+require_once '../../constants.php';
+require_once (ROOT. '/mysql/database/conn.php');
+require_once (ROOT. '/mysql/database/appointmentCategoryDb.php');
+
+
+$json_str = file_get_contents('php://input');
+
+$json_obj = json_decode($json_str);
+
+
+if(!addCategory($conn,$json_obj['userId'],$json_obj['category'])) {
+    print_r(json_encode('Something went wrong'));
+    exit();
+} 
+
+print_r(json_encode('Category successfully added!'));
+exit();

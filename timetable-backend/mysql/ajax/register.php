@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: *");
 
 require_once '../../constants.php';
 require_once (ROOT . "/mysql/database/conn.php");
-require_once (ROOT . "/mysql/database/functions.php");
+require_once (ROOT . "/mysql/database/userDb.php");
 
 $json_str = file_get_contents('php://input');
 

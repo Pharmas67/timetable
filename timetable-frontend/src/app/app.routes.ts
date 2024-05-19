@@ -31,4 +31,9 @@ export const routes: Routes = [
         component: AppointmentDialogComponent,
         title: "History"
     },
-];
+    {
+        path: 'appointmentDialog',
+        component: AppointmentDialogComponent,
+        title: "New Appointment"
+    }
+];  

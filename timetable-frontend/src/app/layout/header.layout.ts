@@ -16,9 +16,12 @@ export class header implements OnInit {
     ngOnInit(): void {
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
-              const currentUrl = this.router.url;
-    
-              this.visible = !(currentUrl === '/' || currentUrl === '/signup');
+                
+                const currentUrl = this.router.url;
+                const splitUrl = currentUrl.split('?');
+                const rootUrl = splitUrl[0];    
+                
+                this.visible = !(rootUrl === '/' || rootUrl === '/signup' || rootUrl === '/appointmentDialog');
             
             }
           });

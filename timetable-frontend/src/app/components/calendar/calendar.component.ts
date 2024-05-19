@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -9,6 +10,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+  constructor(private router:Router) { }
+  
   currentDate = new Date();
   currentMonth: string = '';
   currentYear: number = 0;
@@ -63,6 +66,10 @@ export class CalendarComponent implements OnInit {
   }
 
   selectDate(day: (number | null)): void {
-    console.log(day); // You can implement your logic here for selecting a date
+    console.log(day); 
+  }
+
+  newAppointment(day: (number | null)): void {
+    this.router.navigate(['/appointmentDialog'], { queryParams: {day: day}});
   }
 }

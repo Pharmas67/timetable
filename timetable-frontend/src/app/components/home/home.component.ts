@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { AppointmentsComponent } from '../appointments/appointments.component';
 
@@ -10,11 +10,6 @@ import { AppointmentsComponent } from '../appointments/appointments.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
-    constructor() { }
-
-    ngOnInit(): void {
-      
-    }
+export class HomeComponent{
     
 }

@@ -10,7 +10,7 @@
       <th *ngFor="let day of daysOfWeek">{{ day }}</th>
     </tr>
     <tr *ngFor="let week of calendar">
-      <td *ngFor="let day of week" (click)="selectDate(day)">{{ day }}</td>
+      <td *ngFor="let day of week" (click)="selectDate(day)" (dblclick)="newAppointment(day)">{{ day }}</td>
     </tr>
   </table>
 </div>
