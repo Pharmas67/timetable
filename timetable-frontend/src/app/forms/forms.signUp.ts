@@ -28,56 +28,58 @@ export class formSignUp {
         password2: ''
       };
 
-    async signUp() {                        
-        this.warning = false;
-        
-        if(this.signUpForm.value.username === ''){
-            this.warning = true;            
-            this.warningMessage = 'Username Field is empty.';
-            return;
+    async signUp() {  
+        try {
+            if(this.signUpForm.value.username === ''){
+                this.warning = true;            
+                this.warningMessage = 'Username Field is empty.';
+                return;
+            }
+            if(this.signUpForm.value.email === ''){
+                this.warning = true;
+                this.warningMessage = 'Email Field is empty';
+                return;
+            }
+            if(this.signUpForm.value.password === ''){
+                this.warning = true;
+                this.warningMessage = 'Password Field is empty';
+                return;
+            }
+            if(this.signUpForm.value.password2 === ''){
+                this.warning = true;
+                this.warningMessage = 'Please confirm your Password';
+                return;
+            }
+            this.userObj.username = this.signUpForm.value.username || '';
+            this.userObj.email = this.signUpForm.value.email || '';
+            this.userObj.password = this.signUpForm.value.password || '';
+            this.userObj.password2 = this.signUpForm.value.password2 || '';
+            
+            const response = await this.userService.createUser(this.userObj);
+            if(response == 'Passwords dont match'){
+                this.warning = true;
+                this.warningMessage = 'Passwords dont match, please verify they match';
+            }
+            if(response == 'Something went wrong'){
+                this.warning = true;
+                this.warningMessage = 'Something went wrong, please try again';
+            }
+            if(response == 'invalidUsername'){
+                this.warning = true;
+                this.warningMessage = 'Username already taken, please choose another one';
+            }
+            if(response == 'invalidEmail'){
+                this.warning = true;
+                this.warningMessage = 'Email already taken, choose another one';
+            }
+            if(response == 'UserCreated'){
+                this.router.navigate(['/']);
+            }
+            console.log(response);
+        } catch(e) {
+            console.log(e);
+            throw e;
         }
-        if(this.signUpForm.value.email === ''){
-            this.warning = true;
-            this.warningMessage = 'Email Field is empty';
-            return;
-        }
-        if(this.signUpForm.value.password === ''){
-            this.warning = true;
-            this.warningMessage = 'Password Field is empty';
-            return;
-        }
-        if(this.signUpForm.value.password2 === ''){
-            this.warning = true;
-            this.warningMessage = 'Please confirm your Password';
-            return;
-        }
-        this.userObj.username = this.signUpForm.value.username || '';
-        this.userObj.email = this.signUpForm.value.email || '';
-        this.userObj.password = this.signUpForm.value.password || '';
-        this.userObj.password2 = this.signUpForm.value.password2 || '';
-        
-        const response = await this.userService.createUser(this.userObj);
-        if(response == 'Passwords dont match'){
-            this.warning = true;
-            this.warningMessage = 'Passwords dont match, please verify they match';
-        }
-        if(response == 'Something went wrong'){
-            this.warning = true;
-            this.warningMessage = 'Something went wrong, please try again';
-        }
-        if(response == 'invalidUsername'){
-            this.warning = true;
-            this.warningMessage = 'Username already taken, please choose another one';
-        }
-        if(response == 'invalidEmail'){
-            this.warning = true;
-            this.warningMessage = 'Email already taken, choose another one';
-        }
-        if(response == 'UserCreated'){
-            this.router.navigate(['/']);
-        }
-        console.log(response);
-        
     }
 
     signUpForm = new FormGroup({

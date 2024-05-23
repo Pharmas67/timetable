@@ -26,30 +26,36 @@ export class formSignIn {
 
 
     async signIn() {
-        if(this.signInForm.value.email === ''){
-            this.warning = true;
-            this.warningMessage = 'No email is choosen';
+        try {
+            if(this.signInForm.value.email === ''){
+                this.warning = true;
+                this.warningMessage = 'No email is choosen';
+                return;
+            }
+            if(this.signInForm.value.password === ''){
+                this.warning = true;
+                this.warningMessage = 'No Password choosen';
+                return;    
+            }
+            
+            this.userObj.email = this.signInForm.value.email || '';
+            this.userObj.password = this.signInForm.value.password || '';
+    
+            const response = await this.userService.loginUser(this.userObj);
+            if(response == "invalidUsernameOrPassword"){
+                this.warning = true;
+                this.warningMessage = 'Invalid Username or Password';
+                return;
+            }
+            localStorage.setItem('validUser',"true");
+            localStorage.setItem('userToken',response);
+            this.router.navigate(['/home']);
             return;
-        }
-        if(this.signInForm.value.password === ''){
-            this.warning = true;
-            this.warningMessage = 'No Password choosen';
-            return;    
+        } catch (e) {
+            console.log(e);
+            throw e;
         }
         
-        this.userObj.email = this.signInForm.value.email || '';
-        this.userObj.password = this.signInForm.value.password || '';
-
-        const response = await this.userService.loginUser(this.userObj);
-        if(response == "invalidUsernameOrPassword"){
-            this.warning = true;
-            this.warningMessage = 'Invalid Username or Password';
-            return;
-        }
-        localStorage.setItem('validUser',"true");
-        localStorage.setItem('userToken',response);
-        this.router.navigate(['/home']);
-        return;
     }
 
     signInForm = new FormGroup({

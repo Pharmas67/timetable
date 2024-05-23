@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterLink } from '@angular/router';
+import { userService } from '../service/userService';
+import { User } from '../interfaces/interfaces';
 
 @Component({
     selector: 'app-header',
@@ -9,9 +11,11 @@ import { Router, NavigationEnd, RouterLink } from '@angular/router';
     templateUrl: './header.layout.html'
 })
 export class header implements OnInit {
-    constructor(private router: Router) { }
+    constructor(private router: Router, private userService:userService) { }
 
     visible: boolean = false;
+
+    currentUser: User | null = null;
 
     ngOnInit(): void {
         this.router.events.subscribe(event => {
@@ -25,6 +29,20 @@ export class header implements OnInit {
             
             }
           });
+        
+        const jwt = localStorage.getItem('userToken');
+        const validUser = localStorage.getItem('validUser');
+        if(!validUser){
+            this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
+        }
+        
+        this.userService.getUser(jwt)
+        .then((user: User) => {
+            localStorage.setItem('currentUser',JSON.stringify(user))            
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
     }
 
     logOut(): void {

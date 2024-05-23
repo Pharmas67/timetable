@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
 import { Router } from "@angular/router";
+import { User } from "../interfaces/interfaces";
 
 
 @Injectable({
@@ -29,7 +30,7 @@ export class userService {
         }
     }
 
-    async getUser(jwt: String | null): Promise<any> {
+    async getUser(jwt: String | null): Promise<User> {
         try {
             const response = await axios.post('http://localhost/mysql/ajax/profile.php',jwt);
             
@@ -37,10 +38,11 @@ export class userService {
                 localStorage.removeItem('userToken');
                 localStorage.removeItem('validUser');
                 this.router.navigate(['/'], {queryParams: { error: 'invalidToken'}});
-                return;
             }
+
+            const userData = response.data as User;
             
-            return response.data;
+            return userData;
         } catch(e) {
             console.log(e);
             throw e;

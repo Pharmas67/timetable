@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { userService } from '../../service/userService';
+import { appointmentSerive } from '../../service/appointmentService';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -11,9 +11,12 @@ import { userService } from '../../service/userService';
   templateUrl: './appointment-dialog.component.html'
 })
 export class AppointmentDialogComponent implements OnInit{
-  constructor(private route: ActivatedRoute, private userService:userService) { }
+  constructor(private route: ActivatedRoute, private appointmentService: appointmentSerive) { }
 
   targetDay: string | null = '';
+
+  warningMessage: string = '';
+  warning: boolean = false;
 
   selectedItem: string | null = '';
   newCategory: string = '';
@@ -24,6 +27,7 @@ export class AppointmentDialogComponent implements OnInit{
     startTime: new FormControl(''),
     endTime: new FormControl(''),
     category: new FormControl(''),
+    newCategory: new FormControl(''),
     description: new FormControl('')
   })
 
@@ -31,30 +35,34 @@ export class AppointmentDialogComponent implements OnInit{
   ngOnInit(): void {
     this.targetDay = this.route.snapshot.queryParamMap.get('day');
     
-    const jwt = localStorage.getItem('userToken');
-    this.userService.getUser(jwt)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.error('Error fetching user data:', error);
-      });
   }
 
   onSelectionChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     
+    console.log(value);
+    
   }
 
   addnewCategory(): void {
-    if(this.newCategory && !this.categories.includes(this.newCategory)){
-      this.categories.push(this.newCategory);
-      this.selectedItem = this.newCategory;
-      this.newCategory = '';
+    console.log(this.newCategory);
+    
+    if(this.appointmentForm.value.newCategory && !this.categories.includes(this.appointmentForm.value.newCategory)){
+      this.categories.push(this.appointmentForm.value.newCategory);
+      this.appointmentForm.get('category')?.setValue(this.appointmentForm.value.newCategory);
+      console.log(this.appointmentForm.value.category);
+      
+      this.appointmentForm.value.newCategory = '';
     }
   }
 
-  async addCategory(){
-
+  async submitAppointment(){
+    if(this.appointmentForm.value.name === ''){
+      this.warning = true;
+      this.warningMessage = 'No email is choosen';
+      return;
+    }
+    
+    const response = await this.appointmentService;
   }
 }

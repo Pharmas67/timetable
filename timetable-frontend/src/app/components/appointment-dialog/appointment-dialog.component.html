@@ -2,7 +2,7 @@
     <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
         Book an Appointment
     </div>
-    <form class="py-4 px-6" [formGroup]="appointmentForm">
+    <form class="py-4 px-6" [formGroup]="appointmentForm" (submit)="submitAppointment()">
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="name">
                 Appointment Name
@@ -35,18 +35,18 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="service" name="service" 
                 (change)="onSelectionChange($event)"
-                [(ngModel)]="selectedItem" formControlName="category">
+                formControlName="category" placeholder="Select your Category">
                 <option *ngFor="let category of categories">{{ category }}</option>
                 <option [value]="'newCategory'">Add new Category</option>
             </select>
         </div>
-        <div class="mb-4" *ngIf="selectedItem === 'newCategory'">
+        <div class="mb-4" *ngIf="appointmentForm.get('category')?.value === 'newCategory'">
             <label class="block text-gray-700 font-bold mb-2" for="name">
                 New Category
             </label>
             <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="name" type="text" placeholder="Enter your new Category" (keyup.enter)="addnewCategory()" [(ngModel)]="newCategory">
+                id="name" type="text" placeholder="Enter your new Category" (keyup.enter)="addnewCategory()" formControlName="newCategory">
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="message">
@@ -62,6 +62,12 @@
                 type="submit">
                 Add Appointment
             </button>
+        </div>
+        <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+            <div class="warning-message">
+                {{ warningMessage }}
+            </div>
+            <br>
         </div>
     </form>
 </div>
