@@ -14,7 +14,7 @@ export const routes: Routes = [
     {
         path: 'signup',
         component: formSignUp,
-        data: {title: "Sign Up"}
+        title: "Sign Up"
     },
     {
         path: 'home',

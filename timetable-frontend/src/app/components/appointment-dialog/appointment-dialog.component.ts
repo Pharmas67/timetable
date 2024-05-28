@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { appointmentSerive } from '../../service/appointmentService';
+import { User } from '../../interfaces/interfaces';
+import { Binary } from '@angular/compiler';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -11,10 +13,12 @@ import { appointmentSerive } from '../../service/appointmentService';
   templateUrl: './appointment-dialog.component.html'
 })
 export class AppointmentDialogComponent implements OnInit{
-  constructor(private route: ActivatedRoute, private appointmentService: appointmentSerive) { }
+  constructor(private route: ActivatedRoute, private appointmentService: appointmentSerive, private router:Router) { }
 
   targetDay: string | null = '';
 
+  currentUser: User | null = null;
+  
   warningMessage: string = '';
   warning: boolean = false;
 
@@ -30,21 +34,26 @@ export class AppointmentDialogComponent implements OnInit{
     newCategory: new FormControl(''),
     description: new FormControl('')
   })
-
   
   ngOnInit(): void {
     this.targetDay = this.route.snapshot.queryParamMap.get('day');
     
+    const userString = localStorage.getItem('currentUser');
+    
+    if(userString !== null){
+      this.currentUser = JSON.parse(userString);
+    } else {
+      this.router.navigate(['/home'], { queryParams: {error:'invalidUser'}})
+    }
   }
 
-  onSelectionChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    
-    console.log(value);
+  onSelectionChange(event: Event) {
+    const newCategory = (event.target as HTMLSelectElement).value;
+        
     
   }
 
-  addnewCategory(): void {
+  async addnewCategory() {
     console.log(this.newCategory);
     
     if(this.appointmentForm.value.newCategory && !this.categories.includes(this.appointmentForm.value.newCategory)){
@@ -53,6 +62,20 @@ export class AppointmentDialogComponent implements OnInit{
       console.log(this.appointmentForm.value.category);
       
       this.appointmentForm.value.newCategory = '';
+    }
+
+    const payload = {
+      userId: this.currentUser?.id,
+      category: this.newCategory
+    }
+
+    console.log(payload);
+    
+    const response = await this.appointmentService.addCategory(payload);
+
+    if(response === 'Something went wrong'){
+      this.warning = true;
+      this.warningMessage = 'Something went wrong with your Category, Try again!';
     }
   }
 

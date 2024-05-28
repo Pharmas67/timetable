@@ -16,4 +16,14 @@ export class appointmentSerive {
             throw e;
         }
     }
+
+    async getCategories(obj: Object): Promise<Object> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/addAppointmentCategory.php',obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
 }

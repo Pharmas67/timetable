@@ -26,19 +26,22 @@ export class header implements OnInit {
                 const rootUrl = splitUrl[0];    
                 
                 this.visible = !(rootUrl === '/' || rootUrl === '/signup' || rootUrl === '/appointmentDialog');
-            
+                
+                const jwt = localStorage.getItem('userToken');
+                const validUser = localStorage.getItem('validUser');
+                if(!validUser){
+                    this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
+                } else {
+                    this.fetchCurrentUser(jwt);
+                }   
             }
           });
-        
-        const jwt = localStorage.getItem('userToken');
-        const validUser = localStorage.getItem('validUser');
-        if(!validUser){
-            this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
-        }
-        
+    }
+
+    private fetchCurrentUser(jwt: String | null){
         this.userService.getUser(jwt)
-        .then((user: User) => {
-            localStorage.setItem('currentUser',JSON.stringify(user))            
+        .then( response => {
+            localStorage.setItem('currentUser',JSON.stringify(response));         
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
@@ -48,5 +51,6 @@ export class header implements OnInit {
     logOut(): void {
         localStorage.removeItem("userToken");
         localStorage.removeItem("validUser");
+        localStorage.removeItem("currentUser");
     }
 }
