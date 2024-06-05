@@ -29,11 +29,13 @@ export class header implements OnInit {
                 
                 const jwt = localStorage.getItem('userToken');
                 const validUser = localStorage.getItem('validUser');
-                if(!validUser){
-                    this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
-                } else {
-                    this.fetchCurrentUser(jwt);
-                }   
+                if(!(rootUrl === '/' || rootUrl === '/signup')){
+                    if(!validUser){
+                        this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
+                    } else {
+                        this.fetchCurrentUser(jwt);
+                    }  
+                }
             }
           });
     }

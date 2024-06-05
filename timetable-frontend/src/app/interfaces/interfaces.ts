@@ -1,11 +1,20 @@
 export interface User {
-    id: BinaryData;
+    id: BinaryData,
     username: String,
     email: String
 }
 
 export interface Appointment {
-    label: string;
-    timeframe: string;
-    description: string;
+    id: BinaryData,
+    name: String,
+    startDate: String,
+    endDate: String,
+    category: String,
+    description: String,
+}
+
+export interface targetDay {
+    day: Number,
+    month: String,
+    year: Number
 }

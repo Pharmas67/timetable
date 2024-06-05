@@ -34,7 +34,6 @@
             <select
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="service" name="service" 
-                (change)="onSelectionChange($event)"
                 formControlName="category" placeholder="Select your Category">
                 <option *ngFor="let category of categories">{{ category }}</option>
                 <option [value]="'newCategory'">Add new Category</option>

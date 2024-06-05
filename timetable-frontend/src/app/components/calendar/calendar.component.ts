@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { targetDay } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-calendar',
@@ -12,6 +13,8 @@ import { Router } from '@angular/router';
 export class CalendarComponent implements OnInit {
   constructor(private router:Router) { }
   
+  @Output() sendTargetDay = new EventEmitter<targetDay>();
+
   currentDate = new Date();
   currentMonth: string = '';
   currentYear: number = 0;
@@ -30,7 +33,6 @@ export class CalendarComponent implements OnInit {
     const endDate = new Date(year, month + 1, 0);
     const daysInMonth = endDate.getDate();
     const startDay = startDate.getDay();
-    const endDay = endDate.getDay();
 
     let date = 1;
     this.calendar = [];
@@ -65,11 +67,17 @@ export class CalendarComponent implements OnInit {
     return months[month];
   }
 
-  selectDate(day: (number | null)): void {
-    console.log(day); 
+  async selectDate(day: (number | null)) {
+    const targetDay = {
+      day: day!,
+      month: this.currentMonth!,
+      year: this.currentYear!
+    } 
+
+    this.sendTargetDay.emit(targetDay);
   }
 
   newAppointment(day: (number | null)): void {
-    this.router.navigate(['/appointmentDialog'], { queryParams: {day: day}});
+    this.router.navigate(['/appointmentDialog'], { queryParams: {day: day, month: this.currentMonth, year: this.currentYear}});
   }
 }

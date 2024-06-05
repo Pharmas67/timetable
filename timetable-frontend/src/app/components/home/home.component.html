@@ -4,13 +4,13 @@
     </div>
     <div class="card">
       <div class="card-body">
-        <app-calendar></app-calendar>
+        <app-calendar (sendTargetDay)="receiveTargetDay($event)"></app-calendar>
       </div>
     </div>
     <br>
     <div class="card">
       <div class="card-body">
-        <app-appointments></app-appointments>
+        <app-appointments [sharedDay]="sharedDay"></app-appointments>
     </div>
   </div>
 </div>

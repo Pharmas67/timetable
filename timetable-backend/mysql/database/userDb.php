@@ -16,7 +16,8 @@ function createUser($conn,$username,$email,$password){
     }
 
     $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
-    $stmt->bind_param('ssss',uniqid(),$username,$email,$hashedpwd);
+    $uniqId = uniqid();
+    $stmt->bind_param('ssss',$uniqId,$username,$email,$hashedpwd);
     $stmt->execute();
     $stmt->close();
     return 'UserCreated';

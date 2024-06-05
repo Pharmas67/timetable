@@ -40,6 +40,13 @@ export class formSignUp {
                 this.warningMessage = 'Email Field is empty';
                 return;
             }
+
+            if(!(this.isValidEmail(this.signUpForm.value.email!))){
+                this.warning = true;
+                this.warningMessage = 'Invalid Email';
+                return;
+            }
+
             if(this.signUpForm.value.password === ''){
                 this.warning = true;
                 this.warningMessage = 'Password Field is empty';
@@ -50,6 +57,7 @@ export class formSignUp {
                 this.warningMessage = 'Please confirm your Password';
                 return;
             }
+
             this.userObj.username = this.signUpForm.value.username || '';
             this.userObj.email = this.signUpForm.value.email || '';
             this.userObj.password = this.signUpForm.value.password || '';
@@ -81,7 +89,12 @@ export class formSignUp {
             throw e;
         }
     }
-
+    
+    private isValidEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
     signUpForm = new FormGroup({
         username: new FormControl(''),
         email: new FormControl(''),
