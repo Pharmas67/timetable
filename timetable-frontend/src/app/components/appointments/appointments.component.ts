@@ -19,8 +19,8 @@ export class AppointmentsComponent implements OnChanges{
   currentUser: User | null = null;
   currentUserReady: Boolean = false;
 
-  warning: Boolean | undefined;
-  warningMessage: String = '';
+  warningMessage: string = '';
+  warning: boolean = false;
 
   constructor(private appointmentService: appointmentSerive, private router:Router) {
     this.appointments = [];
