@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { appointmentSerive } from '../../service/appointmentService';
 import { User } from '../../interfaces/interfaces';
-import { Binary } from '@angular/compiler';
 
 @Component({
   selector: 'app-appointment-dialog',

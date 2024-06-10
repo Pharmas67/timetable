@@ -48,4 +48,14 @@ export class userService {
             throw e;
         }
     }
+
+    async updateUser(obj: Object): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/updateUser.php', obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
 }

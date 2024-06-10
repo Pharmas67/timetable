@@ -1,34 +1,36 @@
 <div class="max-w-4xl mx-auto mt-8 px-4">
-    <!-- Profile Image -->
-    <div class="flex justify-center">
-      <img src="path/to/profile-image.jpg" alt="Profile Image" class="w-40 h-40 rounded-full border-4 border-white">
-    </div>
-  
-    <!-- Profile Information -->
-    <div class="mt-8">
-      <!-- Name -->
-      <div class="mb-4">
-        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+  <!-- Profile Image -->
+  <div class="flex justify-center">
+    <img src="" alt="Profile Image" class="w-40 h-40 rounded-full border-4 border-white">
+  </div>
+
+  <!-- Profile Information -->
+  <div class="mt-8 space-y-4">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-gray-700 text-sm font-bold mb-1">Name:</label>
+      <div class="flex items-center">
         <span id="name" class="text-gray-900">{{ name }}</span>
-        <br>
-        <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded" (click)="editName()">Edit</button>
-      </div>
-  
-      <!-- Email -->
-      <div class="mb-4">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-        <span id="email" class="text-gray-900">{{ email }}</span>
-        <br>
-        <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded" (click)="editEmail()">Edit</button>
-      </div>
-  
-      <!-- Password -->
-      <div class="mb-4">
-        <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-        <span id="password" class="text-gray-900">********</span>
-        <br>
-        <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded" (click)="editPassword()">Edit</button>
+        <button class="ml-auto px-6 py-2 bg-gray-200 text-gray-700 rounded" (click)="editName()">Edit</button>
       </div>
     </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-gray-700 text-sm font-bold mb-1">Email:</label>
+      <div class="flex items-center">
+        <span id="email" class="text-gray-900">{{ email }}</span>
+        <button class="ml-auto px-6 py-2 bg-gray-200 text-gray-700 rounded" (click)="editEmail()">Edit</button>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label for="password" class="block text-gray-700 text-sm font-bold mb-1">Password:</label>
+      <div class="flex items-center">
+        <span id="password" class="text-gray-900">********</span>
+        <button class="ml-auto px-6 py-2 bg-gray-200 text-gray-700 rounded" (click)="editPassword()">Edit</button>
+      </div>
+    </div>
+  </div>
 </div>
-  

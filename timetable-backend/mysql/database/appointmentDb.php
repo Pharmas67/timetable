@@ -7,9 +7,19 @@ function addCategory($conn,$userId,$category){
         return false;
     }
     $stmt->bind_param('ss', $userId, $category);
-    $stmt->execute();
+    
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return false; // Failed to execute statement
+    }
+
     $stmt->close();
-    return true;
+    
+    if ($stmt->affected_rows === 1) {
+        return true; // Appointment successfully created
+    } else {
+        return false; // No rows were inserted
+    }
 }
 
 function getCategories($conn,$userId){
@@ -20,7 +30,11 @@ function getCategories($conn,$userId){
         return false;
     }
     $stmt->bind_param('s', $userId);
-    $stmt->execute();
+    
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return false; // Failed to execute statement
+    }
 
     $obj = $stmt->get_result();
     
@@ -41,9 +55,20 @@ function createAppointment($conn,$userId,$name,$startDate,$endDate,$category,$de
 
     $uniqeId = uniqid();
     $stmt->bind_param('sssssssisi',$uniqeId,$userId,$name,$startDate,$endDate,$category,$description,$day,$month,$year);
-    $stmt->execute();
+    
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return false; // Failed to execute statement
+    }
+
     $stmt->close();
-    return true;
+    
+    if ($stmt->affected_rows === 1) {
+        return true; // Appointment successfully created
+    } else {
+        return false; // No rows were inserted
+    }
+
 }
 
 function getAppointments($conn,$userId,$day,$month,$year){
@@ -53,7 +78,11 @@ function getAppointments($conn,$userId,$day,$month,$year){
         return false;
     }
     $stmt->bind_param('sisi',$userId,$day,$month,$year);
-    $stmt->execute();
+    
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return false; // Failed to execute statement
+    }
 
     $obj = $stmt->get_result();
 

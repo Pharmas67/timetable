@@ -1,0 +1,115 @@
+<div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
+        Edit your Profile
+    </div>
+    
+    <!-- Username Form -->
+    <ng-container *ngIf="profileInfo === 'name'">
+        <form class="py-4 px-6" [formGroup]="usernameForm" (submit)="sendUsernameData()">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="name">
+                    Enter New Username:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="name" type="text" placeholder="Enter your name" formControlName="username">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="cName">
+                    Confirm New Username:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="cName" type="text" placeholder="Confirm your name" formControlName="cUsername">
+            </div>
+            <div class="flex items-center justify-center mb-4">
+                <button
+                    class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Add Appointment
+                </button>
+            </div>
+            <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+                <div class="warning-message">
+                    {{ warningMessage }}
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    
+    <!-- Email Form -->
+    <ng-container *ngIf="profileInfo === 'email'">
+        <form class="py-4 px-6" [formGroup]="emailForm" (submit)="sendEmailData()">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="email">
+                    Enter New Email:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="email" type="text" placeholder="Enter your email" formControlName="email">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="cEmail">
+                    Confirm New Email:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="cEmail" type="text" placeholder="Confirm your email" formControlName="cEmail">
+            </div>
+            <div class="flex items-center justify-center mb-4">
+                <button
+                    class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Add Appointment
+                </button>
+            </div>
+            <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+                <div class="warning-message">
+                    {{ warningMessage }}
+                </div>
+            </div>
+        </form>
+    </ng-container>
+
+    <!-- Password Form -->
+    <ng-container *ngIf="profileInfo === 'password'">
+        <form class="py-4 px-6" [formGroup]="passwordForm" (submit)="sendPasswordData()">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="oPassword">
+                    Enter Old Password:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="oPassword" type="password" placeholder="Enter your old password" formControlName="oPassword">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="password">
+                    Enter New Password:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="password" type="password" placeholder="Enter your new password" formControlName="password">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="cPassword">
+                    Confirm New Password:
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="cPassword" type="password" placeholder="Confirm your new password" formControlName="cPassword">
+            </div>
+            <div class="flex items-center justify-center mb-4">
+                <button
+                    class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Add Appointment
+                </button>
+            </div>
+            <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+                <div class="warning-message">
+                    {{ warningMessage }}
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</div>

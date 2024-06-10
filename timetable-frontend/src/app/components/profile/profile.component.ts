@@ -20,14 +20,14 @@ export class ProfileComponent {
   editingPassword: boolean = false;
 
   editName(){
-    this.route.navigate(['/editName']);
+    this.route.navigate(['/editProfile'], {queryParams: { detail: "name"}});
   }
 
   editEmail(){
-    this.route.navigate(['/editEmail']);
+    this.route.navigate(['/editProfile'], {queryParams: { detail: "email"}});
   }
 
   editPassword(){
-    this.route.navigate(['/editProfile']);
+    this.route.navigate(['/editProfile'], {queryParams: { detail: "password"}});
   }
 }
