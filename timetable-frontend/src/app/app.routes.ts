@@ -35,5 +35,20 @@ export const routes: Routes = [
         path: 'appointmentDialog',
         component: AppointmentDialogComponent,
         title: "New Appointment"
+    },
+    {
+        path: 'editName',
+        component: AppointmentDialogComponent,
+        title: "edit Name"
+    },
+    {
+        path: 'editEmail',
+        component: AppointmentDialogComponent,
+        title: "edit Email"
+    },
+    {
+        path: 'editProfile',
+        component: AppointmentDialogComponent,
+        title: "edit Profile"
     }
 ];  

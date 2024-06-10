@@ -26,6 +26,7 @@ function createUser($conn,$username,$email,$password){
 function userExists($conn,$username,$email){
     $sql = 'SELECT * FROM `users` WHERE `username` = ? OR `email` = ?;';
     $stmt = $conn->stmt_init();
+
     if(!$stmt->prepare($sql)){
         return false;
     }
