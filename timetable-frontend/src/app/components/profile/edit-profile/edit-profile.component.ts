@@ -71,13 +71,15 @@ export class EditProfileComponent implements OnInit{
       }
 
       const payload = {
-        id: this.currentUser!.id,
+        userId: this.currentUser!.id,
         username: this.usernameForm.value.username
       }
 
       const response = await this.userService.updateUser(payload);
+      console.log(response);
+      
 
-      if(response === 'Please choose another Username'){
+      if(response === 'invalidUsername'){
         this.warning = true;
         this.warningMessage = 'Please choose another Username!';
         return;
@@ -122,13 +124,15 @@ export class EditProfileComponent implements OnInit{
       }
 
       const payload = {
-        id: this.currentUser!.id,
+        userId: this.currentUser!.id,
         email: this.emailForm.value.email
       }
 
       const response = await this.userService.updateUser(payload);
+      console.log(response);
+      
 
-      if(response === 'Please choose another Email'){
+      if(response === 'invalidEmail'){
         this.warning = true;
         this.warningMessage = 'Please choose another Email!';
         return;
@@ -174,14 +178,16 @@ export class EditProfileComponent implements OnInit{
       }
 
       const payload = {
-        id: this.currentUser!.id,
+        userId: this.currentUser!.id,
         oPassword: this.passwordForm.value.oPassword,
         password: this.passwordForm.value.password
       }
 
       const response = await this.userService.updateUser(payload);
+      console.log(response);
+      
 
-      if(response === 'Your old Password is incorrect'){
+      if(response === 'invalidOldPassword'){
         this.warning = true;
         this.warningMessage = 'Your old Password is incorrect!';
         return;

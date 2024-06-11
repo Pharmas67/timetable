@@ -51,7 +51,7 @@ export class userService {
 
     async updateUser(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/updateUser.php', obj);
+            const response = await axios.post('http://localhost/mysql/ajax/updateProfile.php', obj);
             return response.data;
         } catch(e) {
             console.log(e);

@@ -1,7 +1,11 @@
 <div class="max-w-4xl mx-auto mt-8 px-4">
-  <!-- Profile Image -->
-  <div class="flex justify-center">
-    <img src="" alt="Profile Image" class="w-40 h-40 rounded-full border-4 border-white">
+  <!-- Profile Image and Edit Button -->
+  <div class="flex flex-col items-center">
+    <div class="flex justify-center mb-4">
+      <img [src]="'../../../assets/images/' + (image ? image : 'defaultProfile.png')" alt="Profile Image" class="w-40 h-40 rounded-full border-4 border-white">
+    </div>
+    <button class="px-6 py-2 bg-gray-200 text-gray-700 rounded" (click)="openFileInput()">Edit</button>
+    <input type="file" #fileInput hidden (change)="handleFileInput($event)">
   </div>
 
   <!-- Profile Information -->
@@ -32,5 +36,11 @@
         <button class="ml-auto px-6 py-2 bg-gray-200 text-gray-700 rounded" (click)="editPassword()">Edit</button>
       </div>
     </div>
+
+    <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+      <div class="warning-message">
+          {{ warningMessage }}
+      </div>
+  </div>
   </div>
 </div>

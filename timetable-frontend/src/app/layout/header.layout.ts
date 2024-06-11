@@ -25,7 +25,7 @@ export class header implements OnInit {
                 const splitUrl = currentUrl.split('?');
                 const rootUrl = splitUrl[0];    
                 
-                this.visible = !(rootUrl === '/' || rootUrl === '/signup' || rootUrl === '/appointmentDialog');
+                this.visible = !(rootUrl === '/' || rootUrl === '/signup' || rootUrl === '/appointmentDialog' || rootUrl === '/editProfile');
                 
                 const jwt = localStorage.getItem('userToken');
                 const validUser = localStorage.getItem('validUser');

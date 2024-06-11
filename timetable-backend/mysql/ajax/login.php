@@ -33,7 +33,8 @@ $payload = [
     'exp' => $time->modify('+10 minutes')->getTimestamp(),
     'id' => $user->id,
     'email' => $user->email,
-    'username' => $user->username
+    'username' => $user->username,
+    'image' => $user->image
 ];
 
 $jwt = JWT::encode($payload,$privateKey, 'RS256');

@@ -1,7 +1,8 @@
 export interface User {
     id: BinaryData,
     username: String,
-    email: String
+    email: String,
+    image: String
 }
 
 export interface Appointment {

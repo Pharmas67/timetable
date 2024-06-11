@@ -11,12 +11,12 @@ require_once (ROOT . "/mysql/database/userDb.php");
 
 $json_str = file_get_contents('php://input');
 
-$json_arr = json_decode($json_str,true);
+$json_obj = json_decode($json_str);
 
-if($json_arr['password'] !== $json_arr['password2']){
+if($json_obj->password !== $json_obj->password2){
     print_r(json_encode('Passwords dont match'));
     exit();
 }
 
-print_r(json_encode(createUser($conn,$json_arr['username'],$json_arr['email'],$json_arr['password'])));
+print_r(json_encode(createUser($conn,$json_obj->username,$json_obj->email,$json_obj->password)));
 exit();

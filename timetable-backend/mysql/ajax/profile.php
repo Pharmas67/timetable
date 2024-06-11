@@ -41,7 +41,8 @@ try {
     $user->id = $token->id;
     $user->email = $token->email;
     $user->username = $token->username;
-    
+    $user->image = $token->image;
+
     print_r(json_encode($user));
     exit();
 

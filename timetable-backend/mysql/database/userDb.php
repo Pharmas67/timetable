@@ -16,7 +16,9 @@ function createUser($conn,$username,$email,$password){
     }
 
     $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
+    
     $uniqId = uniqid();
+    
     $stmt->bind_param('ssss',$uniqId,$username,$email,$hashedpwd);
     
     if (!$stmt->execute()) {
@@ -67,7 +69,7 @@ function loginUser($conn,$username,$password){
 }
 
 function displayUser($conn,$username,$email){
-    $sql = 'SELECT `id` ,`username`,`email` FROM `users` WHERE `username` = ? OR `email` = ?;';
+    $sql = 'SELECT `id` ,`username`,`email`,`imageName` FROM `users` WHERE `username` = ? OR `email` = ?;';
     $stmt = $conn->stmt_init();
     if(!$stmt->prepare($sql)){
         return false;
@@ -87,6 +89,7 @@ function displayUser($conn,$username,$email){
         $user->id = $row['id'];
         $user->username = $row['username'];
         $user->email = $row['email'];
+        $user->image = $row['imageName'];
         return $user;
     }
 
@@ -117,6 +120,7 @@ function updateUsername($conn,$userId,$username){
     }
 
     if ($stmt->affected_rows === 0) {
+        $stmt->close();
         return false; // No rows were updated
     } 
 
@@ -131,7 +135,7 @@ function updateEmail($conn,$userId,$email){
         return 'invalidEmail';
     }
     
-    $sql = 'UPDATE `users` SET `username` = ? WHERE `id` = ?;';
+    $sql = 'UPDATE `users` SET `email` = ? WHERE `id` = ?;';
     
     $stmt = $conn->stmt_init();
     
@@ -139,7 +143,7 @@ function updateEmail($conn,$userId,$email){
         return false;
     }
     
-    $stmt->bind_param('ss',$username,$userId);
+    $stmt->bind_param('ss',$email,$userId);
     
     if (!$stmt->execute()) {
         $stmt->close();
@@ -147,6 +151,7 @@ function updateEmail($conn,$userId,$email){
     }
 
     if ($stmt->affected_rows === 0) {
+        $stmt->close();
         return false; // No rows were updated
     } 
 
@@ -155,5 +160,71 @@ function updateEmail($conn,$userId,$email){
     return true;
 }
 
+function getPasswordById($conn,$userId){
+    
+    $sql = 'SELECT `password` FROM `users` WHERE `id` = ?;';
+    
+    $stmt = $conn->stmt_init();
+    
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+    
+    $stmt->bind_param('s',$userId);
+    
+    if(!$stmt->execute()){
+        $stmt->close();
+        return false;
+    }
+
+    $obj = $stmt->get_result();
+
+    if($row = $obj->fetch_assoc()){
+        $stmt->close();
+        return $row['password'];
+    } else {
+        $stmt->close();
+        return false;
+    }
+}
+
+function updatePassword($conn,$userId,$oPassword,$password){
+    
+    $currentPassword = getPasswordById($conn,$userId);
+    
+    if(!$currentPassword){
+        return false;
+    }
+
+    if(!(password_verify($oPassword,$currentPassword))){
+        return 'invalidOldPassword';
+    }
+
+    $sql = 'UPDATE `users` SET `password` = ? WHERE `id` = ?;';
+    
+    $stmt = $conn->stmt_init();
+    
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+    
+    $hashedpwd = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt->bind_param('ss', $hashedpwd, $userId); // Correct parameter binding
+
+    if(!$stmt->execute()){
+        $stmt->close();
+        return false;
+    }
+
+    if ($stmt->affected_rows === 0) {
+        $stmt->close();
+        return false; // No rows were updated
+    } 
+
+    $stmt->close();
+    
+    return true;
+}
 
 ?>
