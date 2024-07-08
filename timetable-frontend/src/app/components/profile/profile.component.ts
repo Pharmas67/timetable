@@ -47,6 +47,8 @@ export class ProfileComponent implements OnInit{
   warningMessage: string = '';
   warning: boolean = false;
 
+  maxSizeInMB = 5; // Maximum size in MB
+
   editName(){
     this.router.navigate(['/editProfile'], {queryParams: { detail: "name"}});
   }
@@ -60,24 +62,49 @@ export class ProfileComponent implements OnInit{
   }
 
   async openFileInput(){
-
     this.fileInput.nativeElement.click();
-
   }
 
-  handleFileInput(event: any) {
+  async handleFileInput(event: any) {
     // Handle file selection here
     const fileList: FileList = event.target.files;
+    console.log(fileList);
+    
     if (fileList.length > 0) {
       const file: File = fileList[0];
-      console.log('Selected file:', file);
       
-      if(file['type'] !== 'image/png' && file['type'] !== 'image/jpeg' && file['type'] !== 'image/gif'){
+      const fileType = file['type'].split('/');
+      console.log(fileType);
+      
+
+      if(!(fileType[0] === 'image')){
         this.warning = true;
         this.warningMessage = 'Wrong File Type';
         return;
       }
 
+      if((file['size'] / 1024 / 1024) > this.maxSizeInMB){
+        this.warning = true;
+        this.warningMessage = 'File is too big';
+        return;
+      }
+      
+      let formData = new FormData();
+      formData.append('userId', String(this.currentUser?.id));
+      formData.append('image', file);
+
+      const response = await this.userService.updateUserImage(formData);
+
+      console.log(response);
+      
+
+      if(response == 'Something went wrong'){
+        this.warning = true;
+        this.warningMessage = 'Something went wrong';
+        return;
+      }
+
+      return;
     }
   }
 }

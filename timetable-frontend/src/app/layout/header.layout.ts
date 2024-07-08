@@ -14,6 +14,7 @@ export class header implements OnInit {
     constructor(private router: Router, private userService:userService) { }
 
     visible: boolean = false;
+    isMenuVisible: boolean = true;
 
     currentUser: User | null = null;
 
@@ -54,5 +55,9 @@ export class header implements OnInit {
         localStorage.removeItem("userToken");
         localStorage.removeItem("validUser");
         localStorage.removeItem("currentUser");
+    }
+
+    toggleMenu(){
+        this.isMenuVisible = !this.isMenuVisible;
     }
 }

@@ -94,4 +94,26 @@ function getAppointments($conn,$userId,$day,$month,$year){
     $stmt->close();
     return $appointments;
 }   
+
+function updateUserImage($conn,$userId,$imageName){
+    $sql = 'UPDATE `users` SET `imageName` = ? WHERE `userId` = ?;';
+    $stmt = $conn->stmt_init();
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+    $stmt->bind_param('ss',$imageName,$userId);
+
+    if(!$stmt->execute()){
+        $stmt->close();
+        return false;
+    }
+
+    $stmt->close();
+
+    if ($stmt->affected_rows === 1) {    
+        return true;
+    }
+
+    return false;
+}
 ?>

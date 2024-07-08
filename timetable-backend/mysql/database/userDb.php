@@ -227,4 +227,29 @@ function updatePassword($conn,$userId,$oPassword,$password){
     return true;
 }
 
+function updateImg($conn,$userId,$imageName){
+    $sql = 'UPDATE `users` SET `imageName`= ? WHERE `id` = ?;';
+    
+    $stmt = $conn->stmt_init();
+    
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+
+    $stmt->bind_param('ss',$imageName,$userId);
+
+    if(!$stmt->execute()){
+        return false;
+    }
+
+    if ($stmt->affected_rows === 0) {
+        $stmt->close();
+        return false; // No rows were updated
+    } 
+
+    $stmt->close();
+    
+    return true;
+}
+
 ?>
