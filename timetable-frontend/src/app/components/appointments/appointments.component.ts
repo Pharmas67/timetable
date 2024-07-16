@@ -1,5 +1,5 @@
 import { Component, Input,OnChanges, SimpleChanges } from '@angular/core';
-import { Appointment, User, targetDay } from '../../interfaces/interfaces';
+import { Appointment, User } from '../../interfaces/interfaces';
 import { CommonModule } from '@angular/common';
 import { appointmentSerive } from '../../service/appointmentService';
 import { Router } from '@angular/router';
@@ -11,9 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './appointments.component.html',
   styleUrls: ['./appointments.component.css']
 })
-export class AppointmentsComponent implements OnChanges{
-  @Input() sharedDay: targetDay | undefined;
-  
+export class AppointmentsComponent implements OnChanges{  
   appointments!: Appointment[];
 
   currentUser: User | null = null;
@@ -29,11 +27,7 @@ export class AppointmentsComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
     const userString = localStorage.getItem('currentUser');
     
-    if(userString !== null){
-      this.currentUser = JSON.parse(userString);
-    } else {
-      this.router.navigate(['/home'], { queryParams: {error:'invalidUser'}})
-    }
+    this.currentUser = JSON.parse(userString!);
     
     if(changes['sharedDay'] && changes['sharedDay'].currentValue){
       const sharedDay = changes['sharedDay'].currentValue;
@@ -45,7 +39,7 @@ export class AppointmentsComponent implements OnChanges{
         year: sharedDay.year
       }
   
-      this.appointmentService.getAppointments(payload)
+      this.appointmentService.getAppointmentsByMonth(payload)
       .then( response => {    
         if(typeof response === 'string' && response === 'Something went wrong'){
           this.warning = true;

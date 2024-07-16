@@ -12,9 +12,6 @@ export interface Appointment {
     endDate: String,
     category: String,
     description: String,
-}
-
-export interface targetDay {
     day: Number,
     month: String,
     year: Number

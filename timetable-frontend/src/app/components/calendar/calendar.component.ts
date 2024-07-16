@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, NgZone, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { targetDay } from '../../interfaces/interfaces';
+import { Appointment, User } from '../../interfaces/interfaces';
+import { appointmentSerive } from '../../service/appointmentService';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './calendar.component.html',
+  templateUrl: './calendar2.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit {
-  constructor(private router:Router) { }
-  
-  @Output() sendTargetDay = new EventEmitter<targetDay>();
+export class CalendarComponent implements OnInit,AfterViewInit {
+  constructor(private router:Router, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
+
+  currentUser: User | undefined;
 
   currentDate = new Date();
   currentMonth: string = '';
@@ -21,13 +22,61 @@ export class CalendarComponent implements OnInit {
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calendar: (number | null)[][] = [];
 
+  appointmentsArray:(Appointment)[] = [];
+  isDataAvailable: boolean = false;
+
   ngOnInit(): void {
     this.renderCalendar(this.currentDate.getMonth(), this.currentDate.getFullYear());
+
+    const userString = localStorage.getItem('currentUser');
+    
+    this.currentUser = JSON.parse(userString!);
+    
+    if(this.currentUser){
+      const payload = {
+        userId: this.currentUser!.id,
+        month: this.currentMonth,
+        year: this.currentYear
+      }
+      console.log("test");
+      
+      this.getAppointmentsbyMonth(payload);
+    }
+  }
+
+  private getAppointmentsbyMonth(payload: Object){
+    this.appointmentService.getAppointmentsByMonth(payload)
+    .then(response => {
+      
+      if(Array.isArray(response) && response.length !== 0){
+        response.forEach((item: Appointment) => {
+          if(!this.appointmentsArray.some(appointment => appointment.id === item.id)){
+            this.appointmentsArray.push(item);
+          }
+        })
+      }
+
+      console.log(response);
+      
+      this.ngZone.run(() => {
+        this.isDataAvailable = true;
+        this.cdRef.detectChanges();
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.cdRef.detectChanges();
+    }, 0);
   }
 
   renderCalendar(month: number, year: number): void {
     this.currentMonth = this.getMonthName(month);
-    this.currentYear = year;
+    this.currentYear = year;    
 
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
@@ -65,16 +114,6 @@ export class CalendarComponent implements OnInit {
   getMonthName(month: number): string {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return months[month];
-  }
-
-  async selectDate(day: (number | null)) {
-    const targetDay = {
-      day: day!,
-      month: this.currentMonth!,
-      year: this.currentYear!
-    } 
-
-    this.sendTargetDay.emit(targetDay);
   }
 
   newAppointment(day: (number | null)): void {

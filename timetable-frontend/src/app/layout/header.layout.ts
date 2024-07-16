@@ -33,23 +33,13 @@ export class header implements OnInit {
                 if(!(rootUrl === '/' || rootUrl === '/signup')){
                     if(!validUser){
                         this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
-                    } else {
-                        this.fetchCurrentUser(jwt);
                     }  
                 }
             }
           });
     }
 
-    private fetchCurrentUser(jwt: String | null){
-        this.userService.getUser(jwt)
-        .then( response => {
-            localStorage.setItem('currentUser',JSON.stringify(response));         
-        })
-        .catch(error => {
-            console.error('Error fetching user data:', error);
-        });
-    }
+    
 
     logOut(): void {
         localStorage.removeItem("userToken");

@@ -37,7 +37,7 @@ export class appointmentSerive {
         }
     }
 
-    async getAppointments(obj: Object): Promise<any> {
+    async getAppointmentsByMonth(obj: Object): Promise<any> {
         try {
             const response = await axios.post('http://localhost/mysql/ajax/getAppointments.php',obj);
             return response.data;

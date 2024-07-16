@@ -47,9 +47,20 @@ export class formSignIn {
                 this.warningMessage = 'Invalid Username or Password';
                 return;
             }
+
             localStorage.setItem('validUser',"true");
             localStorage.setItem('userToken',response);
-            this.router.navigate(['/home']);
+            
+            this.userService.getUser(response)
+                .then( response => {
+                                        
+                    localStorage.setItem('currentUser',JSON.stringify(response)); 
+                    this.router.navigate(['/home']);        
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                });
+            
             return;
         } catch (e) {
             console.log(e);

@@ -71,13 +71,13 @@ function createAppointment($conn,$userId,$name,$startDate,$endDate,$category,$de
 
 }
 
-function getAppointments($conn,$userId,$day,$month,$year){
-    $sql = 'SELECT `id`,`name`,`startDate`,`endDate`,`category`,`description` FROM `appointments` WHERE `userId` = ? AND `day` = ? AND `month` = ? AND `year` = ?;';
+function getAppointments($conn,$userId,$month,$year){
+    $sql = 'SELECT `id`,`name`,`startDate`,`endDate`,`category`,`description`,`day`,`month`,`year` FROM `appointments` WHERE `userId` = ? AND `month` = ? AND `year` = ?;';
     $stmt = $conn->stmt_init();
     if(!($stmt->prepare($sql))){
         return false;
     }
-    $stmt->bind_param('sisi',$userId,$day,$month,$year);
+    $stmt->bind_param('ssi',$userId,$month,$year);
     
     if (!$stmt->execute()) {
         $stmt->close();
