@@ -11,7 +11,7 @@ import { appointmentSerive } from '../../service/appointmentService';
   templateUrl: './calendar2.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit,AfterViewInit {
+export class CalendarComponent implements OnInit {
   constructor(private router:Router, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
 
   currentUser: User | undefined;
@@ -32,16 +32,13 @@ export class CalendarComponent implements OnInit,AfterViewInit {
     
     this.currentUser = JSON.parse(userString!);
     
-    if(this.currentUser){
-      const payload = {
-        userId: this.currentUser!.id,
-        month: this.currentMonth,
-        year: this.currentYear
-      }
-      console.log("test");
-      
-      this.getAppointmentsbyMonth(payload);
-    }
+    const payload = {
+      userId: this.currentUser!.id,
+      month: this.currentMonth,
+      year: this.currentYear
+    }    
+
+    this.getAppointmentsbyMonth(payload);
   }
 
   private getAppointmentsbyMonth(payload: Object){
@@ -55,23 +52,12 @@ export class CalendarComponent implements OnInit,AfterViewInit {
           }
         })
       }
-
-      console.log(response);
       
-      this.ngZone.run(() => {
-        this.isDataAvailable = true;
-        this.cdRef.detectChanges();
-      })
+      this.isDataAvailable = true;
     })
     .catch(error => {
       console.log(error);
     })
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.cdRef.detectChanges();
-    }, 0);
   }
 
   renderCalendar(month: number, year: number): void {
