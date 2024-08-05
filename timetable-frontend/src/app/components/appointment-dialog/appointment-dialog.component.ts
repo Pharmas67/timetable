@@ -99,14 +99,6 @@ export class AppointmentDialogComponent implements OnInit{
       this.appointmentForm.value.category = 'None';
     }
 
-    if(this.appointmentForm.value.startTime === ''){
-      this.appointmentForm.value.startTime = '0:00';
-    }
-
-    if(this.appointmentForm.value.endTime === ''){
-      this.appointmentForm.value.endTime = '24:00';
-    }
-
     if(parseInt(this.appointmentForm.value.endTime!) > parseInt(this.appointmentForm.value.startTime!)){
       const tmpStartTime = this.appointmentForm.value.startTime;
       this.appointmentForm.value.startTime = this.appointmentForm.value.endTime;

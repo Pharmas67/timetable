@@ -9,11 +9,11 @@ header("Access-Control-Allow-Headers: *");
 
 use Firebase\JWT\JWT;
 
-require_once '../../constants.php';
+require_once '../../../constants.php';
 require_once (ROOT . '/vendor/autoload.php');
 require_once (ROOT . '/mysql/database/conn.php');
 require_once (ROOT . '/mysql/database/userDb.php');
-require_once '../../../vault/rsaKey.php';
+require_once '../../../../vault/rsaKey.php';
 
 $json_str = file_get_contents('php://input');
 
@@ -34,7 +34,7 @@ $payload = [
     'id' => $user->id,
     'email' => $user->email,
     'username' => $user->username,
-    'image' => $user->image
+    'imageName' => $user->imageName
 ];
 
 $jwt = JWT::encode($payload,$privateKey, 'RS256');

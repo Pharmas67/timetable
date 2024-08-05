@@ -14,6 +14,8 @@ $categories = 'CREATE TABLE IF NOT EXISTS `timetable`.`appointmentCategories` (`
 
 $appointments = 'CREATE TABLE IF NOT EXISTS `timetable`.`appointments` (`id` BINARY(16) PRIMARY KEY, `userId` BINARY(16) NOT NULL , `name` VARCHAR(256) NOT NULL , `startDate` VARCHAR(256) NULL , `endDate` VARCHAR(256) NULL , `category` VARCHAR(256) NOT NULL , `description` VARCHAR(256) NULL, `day` INT(16) NOT NULL, `month` VARCHAR(256) NOT NULL, `year` INT(16) NOT NULL) ENGINE = InnoDB;';
 
+$friendlist = 'CREATE TABLE IF NOT EXISTS `timetable`.`friendlist` (`userId` BINARY(16) NOT NULL , `friendId` BINARY(16) NOT NULL , `status` VARCHAR(256) NOT NULL ) ENGINE = InnoDB;';
+
 if(!($conn->query($usertable) === TRUE)){
     echo 'Error: ' . $conn->error;
 } 
@@ -23,5 +25,9 @@ if(!($conn->query($categories) === TRUE)){
 } 
 
 if(!($conn->query($appointments) === TRUE)){
+    echo 'Error: ' . $conn->error;
+} 
+
+if(!($conn->query($friendlist) === TRUE)){
     echo 'Error: ' . $conn->error;
 } 

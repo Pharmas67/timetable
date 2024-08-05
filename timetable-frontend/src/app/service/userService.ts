@@ -12,7 +12,7 @@ export class userService {
 
     async createUser(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/register.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/users/register.php',obj);
             return response.data;
         } catch (e) {
             console.log(e);
@@ -22,7 +22,7 @@ export class userService {
 
     async loginUser(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/login.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/users/login.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);
@@ -32,7 +32,7 @@ export class userService {
 
     async getUser(jwt: String | null): Promise<User> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/profile.php',jwt);
+            const response = await axios.post('http://localhost/mysql/ajax/users/profile.php',jwt);
             
             if(!(response.data instanceof Object)){
                 localStorage.removeItem('userToken');
@@ -51,7 +51,7 @@ export class userService {
 
     async updateUser(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/updateProfile.php', obj);
+            const response = await axios.post('http://localhost/mysql/ajax/users/updateProfile.php', obj);
             return response.data;
         } catch(e) {
             console.log(e);
@@ -61,7 +61,27 @@ export class userService {
 
     async updateUserImage(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/updateUserImage.php', obj);
+            const response = await axios.post('http://localhost/mysql/ajax/users/updateUserImage.php', obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+    async fetchUserList(): Promise<Array<User>> {
+        try {
+            const response = await axios.get('http://localhost/mysql/ajax/users/userList.php');
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+    async authenticate(jwt: String | null): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/users/authenticateToken.php', jwt);
             return response.data;
         } catch(e) {
             console.log(e);

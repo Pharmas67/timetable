@@ -9,11 +9,11 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 
-require_once '../../constants.php';
+require_once '../../../constants.php';
 require_once (ROOT . '/vendor/autoload.php');
 require_once (ROOT . '/mysql/database/conn.php');
 require_once (ROOT . '/mysql/database/userDb.php');
-require_once '../../../vault/rsaKey.php';
+require_once '../../../../vault/rsaKey.php';
 
 $json_str = file_get_contents('php://input');
 
@@ -41,7 +41,7 @@ try {
     $user->id = $token->id;
     $user->email = $token->email;
     $user->username = $token->username;
-    $user->image = $token->image;
+    $user->imageName = $token->imageName;
 
     print_r(json_encode($user));
     exit();

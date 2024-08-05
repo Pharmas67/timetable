@@ -19,6 +19,9 @@ export class header implements OnInit {
     currentUser: User | null = null;
 
     ngOnInit(): void {
+        const jwt = localStorage.getItem('userToken');
+        const validUser = localStorage.getItem('validUser');
+        
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 
@@ -28,8 +31,6 @@ export class header implements OnInit {
                 
                 this.visible = !(rootUrl === '/' || rootUrl === '/signup' || rootUrl === '/appointmentDialog' || rootUrl === '/editProfile');
                 
-                const jwt = localStorage.getItem('userToken');
-                const validUser = localStorage.getItem('validUser');
                 if(!(rootUrl === '/' || rootUrl === '/signup')){
                     if(!validUser){
                         this.router.navigate(['/'], { queryParams: {error: 'invalidAccess'}})            
@@ -37,9 +38,18 @@ export class header implements OnInit {
                 }
             }
           });
+
+        this.authenticate(jwt);
     }
 
-    
+    private authenticate(jwt: String | null) {
+        this.userService.authenticate(jwt)
+        .then((response) => {
+            if(response !== 'validToken'){
+                this.router.navigate(['/'], { queryParams: {error: 'invalidToken'}}) 
+            }
+        })
+    }
 
     logOut(): void {
         localStorage.removeItem("userToken");

@@ -8,7 +8,7 @@ import { appointmentSerive } from '../../service/appointmentService';
   selector: 'app-calendar',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './calendar2.component.html',
+  templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
@@ -39,6 +39,7 @@ export class CalendarComponent implements OnInit {
     }    
 
     this.getAppointmentsbyMonth(payload);
+    
   }
 
   private getAppointmentsbyMonth(payload: Object){
@@ -52,6 +53,14 @@ export class CalendarComponent implements OnInit {
           }
         })
       }
+      
+      this.appointmentsArray.sort((a, b) => {
+        if(parseInt(a.startDate.toString()) !== parseInt(b.startDate.toString())){
+          return parseInt(a.startDate.toString()) - parseInt(b.startDate.toString());
+        } else {
+          return parseInt(a.endDate.toString()) - parseInt(b.endDate.toString());
+        }
+      });
       
       this.isDataAvailable = true;
     })
@@ -102,7 +111,7 @@ export class CalendarComponent implements OnInit {
     return months[month];
   }
 
-  newAppointment(day: (number | null)): void {
+  addAppointment(day: (number | null)): void {
     this.router.navigate(['/appointmentDialog'], { queryParams: {day: day, month: this.currentMonth, year: this.currentYear}});
   }
 }

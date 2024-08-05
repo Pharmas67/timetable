@@ -52,8 +52,7 @@ export class formSignIn {
             localStorage.setItem('userToken',response);
             
             this.userService.getUser(response)
-                .then( response => {
-                                        
+                .then( response => {                  
                     localStorage.setItem('currentUser',JSON.stringify(response)); 
                     this.router.navigate(['/home']);        
                 })

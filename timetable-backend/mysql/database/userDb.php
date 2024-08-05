@@ -32,7 +32,7 @@ function createUser($conn,$username,$email,$password){
 }
 
 function userExists($conn,$username,$email){
-    $sql = 'SELECT * FROM `users` WHERE `username` = ? OR `email` = ?;';
+    $sql = 'SELECT * FROM `users` WHERE `username` = ? OR `email` = ?';
     $stmt = $conn->stmt_init();
 
     if(!$stmt->prepare($sql)){
@@ -89,7 +89,7 @@ function displayUser($conn,$username,$email){
         $user->id = $row['id'];
         $user->username = $row['username'];
         $user->email = $row['email'];
-        $user->image = $row['imageName'];
+        $user->imageName = $row['imageName'];
         return $user;
     }
 
@@ -252,4 +252,27 @@ function updateImg($conn,$userId,$imageName){
     return true;
 }
 
+function fetchUserList($conn) {
+    $sql = 'SELECT `id`,`username`,`email`,`imageName` FROM `users`;';
+    
+    $stmt = $conn->stmt_init();
+    
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+
+    if(!$stmt->execute()){
+        return false;
+    }
+
+    $obj = $stmt->get_result();
+
+    $userList = [];
+    while($row = $obj->fetch_assoc()){
+        $userList[] = $row;
+    }
+
+    $stmt->close();
+    return $userList;
+}
 ?>

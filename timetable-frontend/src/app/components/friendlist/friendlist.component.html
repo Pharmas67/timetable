@@ -1,0 +1,53 @@
+<ng-container *ngIf="fVisible">
+<div class="bg-gray-100 p-4 m-4">
+  <div class="max-w-sm mx-auto my-10">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <ul class="divide-y divide-gray-200">
+        <li class="p-3 flex justify-between items-center user-card">
+          <div class="flex items-center w-full">
+            <input placeholder="Please enter a name"
+              class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          </div>
+          <div class="ml-3">
+              <button class="glass-button p-2 rounded-full">
+                  <img src="../../../assets/icons8-lupe-48.png">
+              </button>
+          </div>
+          <div class="ml-3">
+            <button class="glass-button p-2 rounded-full" (click)="openSearchDialog()">
+                <img src="../../../assets/addUser.png">
+            </button>
+          </div>
+          <div class="ml-3">
+            <button class="glass-button p-2 rounded-full" (click)="openFriendDialog()">
+                <img src="../../../assets/acceptUser.png">
+            </button>
+          </div>
+        </li>
+        <div *ngFor="let user of friendArray">
+          <li class="p-3 flex justify-between items-center user-card">
+              <div class="flex items-center">
+                <img class="w-10 h-10 rounded-full" [src]="(user.imageName ? 'http://localhost/assets/userImages/' + user.imageName : '../../../assets/images/defaultProfile.png')">
+                <span class="ml-3 font-medium">{{user.username}}</span>
+              </div>
+              <div>
+                <button class="glass-button p-2 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                  </svg>
+                </button>
+              </div>
+            </li>
+        </div>
+        <div class="warning-container" *ngIf="warning" style="margin-top: 10px;">
+          <div class="warning-message">
+              {{ warningMessage }}
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+</ng-container>
+<app-friendlist-dialog [visible]="searchDialogVisible" [friendArray]="friendArray"></app-friendlist-dialog>
+<app-friend-request-dialog [visible]="reqDialogVisible" [friendArray]="friendArray"></app-friend-request-dialog>

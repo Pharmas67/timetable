@@ -9,7 +9,7 @@ export class appointmentSerive {
 
     async addCategory(obj: Object): Promise<string> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/addAppointmentCategory.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/addAppointmentCategory.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);
@@ -19,7 +19,7 @@ export class appointmentSerive {
 
     async getCategories(obj: Object): Promise<Array<Object>> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/getAppointmentCategories.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/getAppointmentCategories.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);
@@ -29,7 +29,7 @@ export class appointmentSerive {
 
     async createAppointment(obj: Object): Promise<String> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/createAppointment.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/createAppointment.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);
@@ -39,7 +39,7 @@ export class appointmentSerive {
 
     async getAppointmentsByMonth(obj: Object): Promise<any> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/getAppointments.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/getAppointments.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);

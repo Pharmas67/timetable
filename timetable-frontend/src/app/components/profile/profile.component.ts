@@ -29,11 +29,8 @@ export class ProfileComponent implements OnInit{
       this.router.navigate(['/home'], { queryParams: {error:'invalidUser'}})
     }
 
-    this.name = this.currentUser!.username;
-
-    this.email = this.currentUser!.email;
-
-    this.image = this.currentUser?.image;
+    console.log(this.currentUser);
+    
   }
 
   name: String = 'John Doe';

@@ -2,7 +2,7 @@ export interface User {
     id: BinaryData,
     username: String,
     email: String,
-    image: String
+    imageName: String
 }
 
 export interface Appointment {
@@ -15,4 +15,10 @@ export interface Appointment {
     day: Number,
     month: String,
     year: Number
+}
+
+export interface Friendship {
+    userId: BinaryData,
+    friendId: BinaryData,
+    status: String
 }

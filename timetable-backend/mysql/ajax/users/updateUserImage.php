@@ -4,7 +4,7 @@ header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: *");
 
-require_once '../../constants.php';
+require_once '../../../constants.php';
 require_once (ROOT . "/mysql/database/conn.php");
 require_once (ROOT . "/mysql/database/userDb.php");
 
