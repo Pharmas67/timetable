@@ -8,19 +8,24 @@
             <input placeholder="Please enter a name"
               class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
           </div>
-          <div class="ml-3">
-              <button class="glass-button p-2 rounded-full">
+          <div class="m-4">
+              <button class="glass-button rounded-full">
                   <img src="../../../assets/icons8-lupe-48.png">
               </button>
           </div>
-          <div class="ml-3">
-            <button class="glass-button p-2 rounded-full" (click)="openSearchDialog()">
+          <div class="m-4">
+            <button class="glass-button rounded-full" (click)="openSearchDialog()">
                 <img src="../../../assets/addUser.png">
             </button>
           </div>
-          <div class="ml-3">
-            <button class="glass-button p-2 rounded-full" (click)="openFriendDialog()">
+          <div class="m-4">
+            <button class="glass-button rounded-full" (click)="openFriendDialog()">
                 <img src="../../../assets/acceptUser.png">
+            </button>
+          </div>
+          <div class="m-4">
+            <button class="glass-button rounded-full" (click)="openBlockDialog()">
+                <img src="../../../assets/unBlockUser.png">
             </button>
           </div>
         </li>
@@ -51,3 +56,4 @@
 </ng-container>
 <app-friendlist-dialog [visible]="searchDialogVisible" [friendArray]="friendArray"></app-friendlist-dialog>
 <app-friend-request-dialog [visible]="reqDialogVisible" [friendArray]="friendArray"></app-friend-request-dialog>
+<app-friend-request-dialog [visible]="blockDialogVisible"></app-friend-request-dialog>

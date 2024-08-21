@@ -28,16 +28,6 @@ export class friendService {
         }
     }
 
-    async fetchFriendReqsRev(userObj: Object): Promise<Array<Friendship>> {
-        try {
-            const response = await axios.post('http://localhost/mysql/ajax/friendlist/friendReqRev.php',userObj);
-            return response.data;
-        } catch(e) {
-            console.log(e);
-            throw e;
-        }
-    }
-
     async acceptFriend(obj: Object): Promise<string> {
         try {
             const response = await axios.post('http://localhost/mysql/ajax/friendlist/acceptFriend.php',obj);
@@ -59,6 +49,26 @@ export class friendService {
     }
 
     async removeFriend(obj: Object): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/friendlist/removeFriend.php',obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+    async blockUser(obj: Object): Promise<string> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/friendlist/removeFriend.php',obj);
+            return response.data;
+        } catch(e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+    async unBlockUser(obj: Object): Promise<string> {
         try {
             const response = await axios.post('http://localhost/mysql/ajax/friendlist/removeFriend.php',obj);
             return response.data;

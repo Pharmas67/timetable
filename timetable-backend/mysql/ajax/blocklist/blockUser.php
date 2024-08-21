@@ -7,23 +7,23 @@ header("Access-Control-Allow-Headers: *");
 
 require_once '../../../constants.php';
 require_once (ROOT. '/mysql/database/conn.php');
-require_once (ROOT. '/mysql/database/friendlistDb.php');
+require_once (ROOT. '/mysql/database/blocklistDb.php');
 
 $json_str = file_get_contents('php://input');
 
 $json_obj = json_decode($json_str);
 
-$response = acceptFriend($conn,$json_obj->userId,$json_obj->friendId);
+$response = blockUser($conn,$json_obj->userId,$json_obj->blockId);
 
 if(!$response){
-    echo json_encode('invalidRequest');
+    echo json_encode('Something went wrong');
     exit();
 }
 
-if($response == 'noRequestAvailable'){
-    echo json_encode('invalidRequest');
+if($response === TRUE){
+    echo json_encode('Successfull');
     exit();
 }
 
-echo json_encode('validRequest');
+echo json_encode('Something went wrong');
 exit();

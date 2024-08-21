@@ -4,6 +4,7 @@ import { Friendship, User } from '../../../interfaces/interfaces';
 import { userService } from '../../../service/userService';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { friendService } from '../../../service/friendService';
+import { blockService } from '../../../service/blockService';
 
 @Component({
   selector: 'app-friendlist-dialog',
@@ -14,7 +15,7 @@ import { friendService } from '../../../service/friendService';
 })
 export class FriendlistDialogComponent {
 
-constructor(private userService:userService, private friendService:friendService) {}
+constructor(private userService:userService, private friendService:friendService,private blockService:blockService) {}
 
 @Input() visible: Boolean | undefined;
 @Input() friendArray: User[] = [];
@@ -30,18 +31,22 @@ warning: boolean = false;
 
 dialogVisible: Boolean = false;
 
-ngOnInit(): void {
+async ngOnInit() {
   const userString = localStorage.getItem('currentUser');
 
   this.currentUser = JSON.parse(userString!);
   
-  this.fetchUserList();
+  await this.fetchUserList();
 
   const payload = {
     userId: this.currentUser?.id
   }
 
   this.fetchFriendRequests(payload);
+
+  if(this.userArray.length > 0){
+    await this.fetchFriendRequests(payload);
+  }
 
   this.initUserAray = this.userArray;  
 
@@ -51,30 +56,29 @@ ngOnInit(): void {
 
 searchInput = new FormControl('')
 
+private async fetchUserList(){
+  try {
+    const response = await this.userService.fetchUserList();
 
-private fetchUserList() : void{
-  this.userService.fetchUserList()
-  .then((response) => {
     if(Array.isArray(response) && response.length !== 0){
-      const nonFriendUsers = response.filter((item: User) => 
-        !this.friendArray.some((element : User) => {
-          item.id === element.id
-        })
-      );
+      const nonFriendUsers = response.filter((item: User) => {
+        return !this.friendArray.some((element : User) => item.id === element.id)
+      });
+
       this.userArray.push(...nonFriendUsers);
 
       this.userArray = this.userArray.filter((user: User) => user.id !== this.currentUser?.id);
     }
-  })
-  .catch((error) => {
+  } catch(error){
     console.log(error);
     throw error;
-  })
+  }
 }
 
-private fetchFriendRequests(userObj: Object): void {
-  this.friendService.fetchFriendReqs(userObj)
-  .then((response) => {
+private async fetchFriendRequests(userObj: Object) {
+  try {
+    const response = await this.friendService.fetchFriendReqs(userObj);
+    
     if(Array.isArray(response) && response.length !== 0){
       response.forEach((item: Friendship) => {
         if(!this.friendReqs.some((element: Friendship) => element.friendId === item.friendId)){
@@ -82,13 +86,28 @@ private fetchFriendRequests(userObj: Object): void {
         }
       });
     }
-  })
-  .catch((error) => {
+  } catch(error) {
     console.log(error);
     throw error;
-  })
+  }
 }
 
+private async fetchBlocklist(userObj: Object) {
+  try {
+    const response = await this.friendService.fetchFriendReqs(userObj);
+    
+    if(Array.isArray(response) && response.length !== 0){
+      response.forEach((item: Friendship) => {
+        if(!this.friendReqs.some((element: Friendship) => element.friendId === item.friendId)){
+          this.friendReqs.push(item);
+        }
+      });
+    }
+  } catch(error) {
+    console.log(error);
+    throw error;
+  }
+}
 closeDialog(): void {
   this.visible = !this.visible;
 
@@ -159,6 +178,39 @@ checkForRequest(userId: any): boolean {
     return true;
   } else {
     return false;
+  }
+}
+
+async blockUser(targetId: BinaryData){
+  try {
+    const payload = {
+      userId: this.currentUser?.id,
+      blockId: targetId
+    }
+
+    const response = await this.(payload);
+
+    if(response == 'Something went wrong'){
+      this.warning = true;
+      this.warningMessage = 'Something went wrong, try again later';
+      return;
+    }
+
+    if(response == 'Successfull'){
+      const payload = {
+        userId: this.currentUser?.id
+      }
+    
+      
+      this.visible = !this.visible;
+      location.reload();
+      return;
+    }
+
+    return;
+  } catch(e) {
+    console.log(e);
+    throw e;
   }
 }
 }

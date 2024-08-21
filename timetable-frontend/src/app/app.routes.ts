@@ -47,5 +47,10 @@ export const routes: Routes = [
         path: 'editProfile',
         component: EditProfileComponent,
         title: "Edit Profile"
+    },
+    {
+        path:'**',
+        component: formSignIn,
+        title: "Sign In"
     }
 ];  

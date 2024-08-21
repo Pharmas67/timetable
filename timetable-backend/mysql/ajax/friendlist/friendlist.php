@@ -18,7 +18,7 @@ if(!fetchFriendList($conn,$json_obj->userId) && fetchFriendList($conn,$json_obj-
     exit();
 }
 
-$friendList = fetchFriendList($conn,$json_obj->userId);
+$friendlist = fetchFriendList($conn,$json_obj->userId);
 
-echo json_encode($friendList);
+echo json_encode($friendlist);
 exit();

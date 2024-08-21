@@ -57,7 +57,7 @@ function fetchFriendReq($conn,$userId) {
 }
 
 function friendshipExists($conn,$userId,$friendId){
-    $sql = 'SELECT * FROM `friendlist` WHERE `userId` = ? AND `friendId` = ?';
+    $sql = 'SELECT * FROM `friendlist` WHERE `userId` = ? AND `friendId` = ? AND (`status`= "requested" OR `status`="active")';
 
     $stmt = $conn->stmt_init();
 
@@ -76,7 +76,7 @@ function friendshipExists($conn,$userId,$friendId){
 
     if($row = $obj->fetch_assoc()){
         $stmt->close();
-        return $row;
+        return true;
     } else {
         $stmt->close();
         return false;
@@ -120,6 +120,27 @@ function updateFriendRequest($conn,$userId,$friendId) {
     $stmt->bind_param('ss',$userId,$friendId);
 
     if(!$stmt->execute()){
+        $stmt->close();
+        return false;
+    }
+
+    $stmt->close();
+
+    $sql = 'DELETE FROM `friendlist` WHERE (`userId` = ? AND `friendId` = ? AND `status` = "requested") OR (`userId` = ? AND `friendId` = ? AND `status` = "requested")';
+
+    $stmt = $conn->stmt_init();
+
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+
+    $stmt->bind_param('ssss',$userId,$friendId,$friendId,$userId);
+
+    if(!$stmt->execute()){
+        return false;
+    }
+
+    if($stmt->affected_rows === 0){
         $stmt->close();
         return false;
     }

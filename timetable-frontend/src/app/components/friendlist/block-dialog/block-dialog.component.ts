@@ -1,23 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Friendship, User } from '../../../interfaces/interfaces';
+import { BlockedRelationship, Friendship, User } from '../../../interfaces/interfaces';
 import { userService } from '../../../service/userService';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { friendService } from '../../../service/friendService';
+import { blockService } from '../../../service/blockService';
+
 @Component({
   selector: 'app-friend-request-dialog',
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule],
-  templateUrl: './friend-request-dialog.component.html',
-  styleUrl: './friend-request-dialog.component.css'
+  templateUrl: './block-dialog.component.html',
+  styleUrl: './block-dialog.component.css'
 })
-export class FriendRequestDialogComponent {
-  constructor(private userService:userService, private friendService:friendService) {}
+export class BlockDialogComponent {
+  constructor(private userService:userService, private blockService:blockService) {}
 
   @Input() visible: Boolean | undefined;
-  @Input() friendArray: User[] = [];
-  friendReqs: Friendship[] = [];
   
+  blockArray: BlockedRelationship[] = [];
+
   currentUser: User | undefined;
   
   userArray: User[] = [];
@@ -36,11 +37,11 @@ export class FriendRequestDialogComponent {
     await this.fetchUserList();
     
     const payload = {
-      userId: this.currentUser?.id
+      userId: this.currentUser?.id,
     }    
 
     if(this.userArray.length > 0){
-      await this.fetchFriendRequests(payload);
+      await this.fetchBlocklist(payload);
     } 
 
     this.initUserAray = this.userArray;  
@@ -54,11 +55,13 @@ export class FriendRequestDialogComponent {
       const response = await this.userService.fetchUserList();
 
       if (Array.isArray(response) && response.length !== 0) {
-        const nonFriendUsers = response.filter((item: User) => 
-            !this.friendArray.some((element: User) => item.id === element.id)
-        );
+        response.forEach((item: User) => {
+          if(!this.userArray.some((element: User) => item.id === element.id)){
+            this.userArray.push(item);
+          }
+        })
 
-        this.userArray = nonFriendUsers.filter((user: User) => user.id !== this.currentUser?.id);
+        this.userArray.filter((item) => item.id !== this.currentUser?.id);
       }
 
     } catch(error) {
@@ -67,20 +70,20 @@ export class FriendRequestDialogComponent {
     }
   }
   
-  private async fetchFriendRequests(userObj: Object) {
+  private async fetchBlocklist(userObj: Object) {
     try {
-      const response = await this.friendService.fetchFriendReqs(userObj);
+      const response = await this.blockService.fetchBlocklist(userObj);
 
       if(Array.isArray(response) && response.length !== 0){        
-        response.forEach((element: Friendship) => {
-          if(!this.friendReqs.some((item : Friendship) => item.userId === element.userId)){
-            this.friendReqs.push(element);
+        response.forEach((item: BlockedRelationship) => {
+          if(!this.blockArray.some((element: BlockedRelationship) => item.id === element.id)){
+            this.blockArray.push(item)
           }
-        });
+        })
       }
-  
+      
       this.userArray = this.userArray.filter((user: User) => {
-        return this.friendReqs.some((friendReq : Friendship) => user.id === friendReq.userId);
+        return this.blockArray.some((item : BlockedRelationship) => user.id === item.blockerId);
       });
 
     } catch(error) {
@@ -114,24 +117,18 @@ export class FriendRequestDialogComponent {
     this.searchInput.setValue('');
   }
   
-  async acceptFriend(targetId: BinaryData){
+  async unBlockUser(targetId: BinaryData){
     try {
       const payload = {
         userId: this.currentUser?.id,
-        friendId: targetId
+        blockedId: targetId
       }
   
-      const response = await this.friendService.acceptFriend(payload);
+      const response = await this.blockService.unBlockUser(payload);
   
       if(response == 'invalidRequest'){
         this.warning = true;
         this.warningMessage = 'Something went wrong, try again later';
-        return;
-      }
-  
-      if(response == 'alreadyExists'){
-        this.warning = true;
-        this.warningMessage = 'You already sent a request';
         return;
       }
   
@@ -140,23 +137,17 @@ export class FriendRequestDialogComponent {
           userId: this.currentUser?.id
         }
         
-        this.fetchFriendRequests(payload);
+        this.fetchBlocklist(payload);
         this.visible = !this.visible;
         location.reload();
         return;
       }
-            return;
+      
+      return;
+    
     } catch(e) {
       console.log(e);
       throw e;
-    }
-  }
-  
-  checkForRequest(userId: any): boolean {
-    if(this.friendReqs.some((user: Friendship) => user.friendId === userId)){
-      return true;
-    } else {
-      return false;
     }
   }
 }

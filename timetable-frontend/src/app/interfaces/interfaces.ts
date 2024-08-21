@@ -22,3 +22,9 @@ export interface Friendship {
     friendId: BinaryData,
     status: String
 }
+
+export interface BlockedRelationship {
+    id: Number,
+    blockerId: BinaryData,
+    blockedId: BinaryData
+}
