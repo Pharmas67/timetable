@@ -1,7 +1,7 @@
 <?php
 
 function fetchFriendList($conn,$userId) {
-    $sql = 'SELECT * FROM `friendlist` WHERE `userId` = ? AND `status` = "active"';
+    $sql = 'SELECT * FROM `friendlist` WHERE `userId` = ? OR `friendId` = ? AND `status` = "active"';
     
     $stmt = $conn->stmt_init();
 
@@ -9,7 +9,7 @@ function fetchFriendList($conn,$userId) {
         return false;
     }
 
-    $stmt->bind_param('s',$userId);
+    $stmt->bind_param('ss',$userId,$userId);
     
     if(!$stmt->execute()){
         $stmt->close();

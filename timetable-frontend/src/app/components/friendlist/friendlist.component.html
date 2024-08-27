@@ -54,6 +54,6 @@
   </div>
 </div>
 </ng-container>
-<app-friendlist-dialog [visible]="searchDialogVisible" [friendArray]="friendArray"></app-friendlist-dialog>
+<app-friendlist-dialog [visible]="searchDialogVisible" [friendArray]="friendArray" [blockArray]="blockArray"></app-friendlist-dialog>
 <app-friend-request-dialog [visible]="reqDialogVisible" [friendArray]="friendArray"></app-friend-request-dialog>
-<app-friend-request-dialog [visible]="blockDialogVisible"></app-friend-request-dialog>
+<app-block-dialog [visible]="blockDialogVisible" [blockArray]="blockArray"></app-block-dialog>

@@ -24,7 +24,7 @@ export interface Friendship {
 }
 
 export interface BlockedRelationship {
-    id: Number,
+    id: BinaryData,
     blockerId: BinaryData,
     blockedId: BinaryData
 }

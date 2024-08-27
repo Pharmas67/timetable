@@ -16,7 +16,7 @@ $appointments = 'CREATE TABLE IF NOT EXISTS `timetable`.`appointments` (`id` BIN
 
 $friendlist = 'CREATE TABLE IF NOT EXISTS `timetable`.`friendlist` (`userId` BINARY(16) NOT NULL , `friendId` BINARY(16) NOT NULL , `status` VARCHAR(256) NOT NULL ) ENGINE = InnoDB;';
 
-$blocklist = 'CREATE TABLE IF NOT EXISTS `timetable`.`blocklist` (`id` INT NOT NULL,`blockerId` BINARY(16) NOT NULL , `blockedId` BINARY(16) NOT NULL ) ENGINE = InnoDB;';
+$blocklist = 'CREATE TABLE IF NOT EXISTS `timetable`.`blocklist` (`id` BINARY(16) NOT NULL PRIMARY KEY,`blockerId` BINARY(16) NOT NULL , `blockedId` BINARY(16) NOT NULL ) ENGINE = InnoDB;';
 
 
 if(!($conn->query($usertable) === TRUE)){

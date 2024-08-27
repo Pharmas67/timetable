@@ -6,7 +6,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { blockService } from '../../../service/blockService';
 
 @Component({
-  selector: 'app-friend-request-dialog',
+  selector: 'app-block-dialog',
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './block-dialog.component.html',
@@ -16,8 +16,7 @@ export class BlockDialogComponent {
   constructor(private userService:userService, private blockService:blockService) {}
 
   @Input() visible: Boolean | undefined;
-  
-  blockArray: BlockedRelationship[] = [];
+  @Input() blockArray:BlockedRelationship[] = [];
 
   currentUser: User | undefined;
   
@@ -40,12 +39,12 @@ export class BlockDialogComponent {
       userId: this.currentUser?.id,
     }    
 
-    if(this.userArray.length > 0){
-      await this.fetchBlocklist(payload);
-    } 
-
     this.initUserAray = this.userArray;  
-      
+    
+    if(this.userArray.length > 0){
+      await this.fetchBlockedUser();
+    }
+
   }
   
   searchInput = new FormControl('')
@@ -63,29 +62,19 @@ export class BlockDialogComponent {
 
         this.userArray.filter((item) => item.id !== this.currentUser?.id);
       }
-
+      console.log(this.userArray);
+      
     } catch(error) {
       console.log(error);
       throw error;
     }
   }
-  
-  private async fetchBlocklist(userObj: Object) {
+
+  private async fetchBlockedUser(){
     try {
-      const response = await this.blockService.fetchBlocklist(userObj);
-
-      if(Array.isArray(response) && response.length !== 0){        
-        response.forEach((item: BlockedRelationship) => {
-          if(!this.blockArray.some((element: BlockedRelationship) => item.id === element.id)){
-            this.blockArray.push(item)
-          }
-        })
-      }
-      
       this.userArray = this.userArray.filter((user: User) => {
-        return this.blockArray.some((item : BlockedRelationship) => user.id === item.blockerId);
-      });
-
+        return this.blockArray.some((relationship: BlockedRelationship) => relationship.blockerId === this.currentUser?.id && relationship.blockedId === user.id);
+      });      
     } catch(error) {
       console.log(error);
       throw error;
@@ -126,6 +115,9 @@ export class BlockDialogComponent {
   
       const response = await this.blockService.unBlockUser(payload);
   
+      console.log(response);
+      
+
       if(response == 'invalidRequest'){
         this.warning = true;
         this.warningMessage = 'Something went wrong, try again later';
@@ -133,11 +125,7 @@ export class BlockDialogComponent {
       }
   
       if(response == 'validRequest'){
-        const payload = {
-          userId: this.currentUser?.id
-        }
-        
-        this.fetchBlocklist(payload);
+      
         this.visible = !this.visible;
         location.reload();
         return;

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Friendship, User } from '../../../interfaces/interfaces';
+import { BlockedRelationship, Friendship, User } from '../../../interfaces/interfaces';
 import { userService } from '../../../service/userService';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { friendService } from '../../../service/friendService';
@@ -19,6 +19,7 @@ constructor(private userService:userService, private friendService:friendService
 
 @Input() visible: Boolean | undefined;
 @Input() friendArray: User[] = [];
+@Input() blockArray:BlockedRelationship[] = [];
 friendReqs: Friendship[] = [];
 
 currentUser: User | undefined;
@@ -42,14 +43,19 @@ async ngOnInit() {
     userId: this.currentUser?.id
   }
 
-  this.fetchFriendRequests(payload);
-
-  if(this.userArray.length > 0){
-    await this.fetchFriendRequests(payload);
-  }
-
   this.initUserAray = this.userArray;  
 
+  if(this.userArray.length > 0){    
+    await this.fetchFriendRequests(payload);
+
+    this.userArray = this.userArray.filter((user: User) => user.id !== this.currentUser?.id);
+
+    this.userArray = this.userArray.filter((user: User) => {
+      return !this.friendArray.some((friend: User) => friend.id === user.id);
+    });
+
+    await this.fetchBlockUser();
+  }
   //console.log(this.friendReqs);
   
 }
@@ -66,8 +72,6 @@ private async fetchUserList(){
       });
 
       this.userArray.push(...nonFriendUsers);
-
-      this.userArray = this.userArray.filter((user: User) => user.id !== this.currentUser?.id);
     }
   } catch(error){
     console.log(error);
@@ -92,22 +96,18 @@ private async fetchFriendRequests(userObj: Object) {
   }
 }
 
-private async fetchBlocklist(userObj: Object) {
-  try {
-    const response = await this.friendService.fetchFriendReqs(userObj);
-    
-    if(Array.isArray(response) && response.length !== 0){
-      response.forEach((item: Friendship) => {
-        if(!this.friendReqs.some((element: Friendship) => element.friendId === item.friendId)){
-          this.friendReqs.push(item);
-        }
-      });
-    }
+private async fetchBlockUser(){
+  try {   
+    this.userArray = this.userArray.filter((user: User) => {
+      return !this.blockArray.some((relationship: BlockedRelationship) => user.id === relationship.blockedId)
+    })    
+
   } catch(error) {
     console.log(error);
     throw error;
   }
 }
+
 closeDialog(): void {
   this.visible = !this.visible;
 
@@ -181,14 +181,17 @@ checkForRequest(userId: any): boolean {
   }
 }
 
-async blockUser(targetId: BinaryData){
+async blockUser(targetId: BinaryData){  
   try {
     const payload = {
       userId: this.currentUser?.id,
       blockId: targetId
     }
 
-    const response = await this.(payload);
+    const response = await this.blockService.blockUser(payload);
+
+    console.log(response);
+    
 
     if(response == 'Something went wrong'){
       this.warning = true;
@@ -201,7 +204,7 @@ async blockUser(targetId: BinaryData){
         userId: this.currentUser?.id
       }
     
-      
+      this.fetchFriendRequests(payload);
       this.visible = !this.visible;
       location.reload();
       return;

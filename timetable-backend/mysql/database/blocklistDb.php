@@ -1,13 +1,15 @@
 <?php
     function blockUser($conn,$userId,$blockId){
-        $sql = 'INSERT INTO `blocklist` (`blockerId`,`blockedId`) VALUES (?,?)';
+        $sql = 'INSERT INTO `blocklist` (`id`,`blockerId`,`blockedId`) VALUES (?,?,?)';
 
         $stmt = $conn->stmt_init();
         if(!$stmt->prepare($sql)){
             return false;
         }
 
-        $stmt->bind_param('ss',$userId,$blockId);
+        $uniqId = uniqid();
+
+        $stmt->bind_param('sss',$uniqId,$userId,$blockId);
 
         if(!$stmt->execute()){
             $stmt->close();
@@ -60,11 +62,6 @@
         $stmt->bind_param('ss',$userId,$userId);
 
         if(!$stmt->execute()){
-            $stmt->close();
-            return false;
-        }
-
-        if($stmt->affected_rows === 0){
             $stmt->close();
             return false;
         }
