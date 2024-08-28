@@ -118,7 +118,7 @@ export class FriendlistComponent implements OnInit{
     this.blockDialogVisible = !this.blockDialogVisible;
   }
 
-  test(id: BinaryData) {
-    this.router.navigate(['/viewCalendar'], { queryParams: { viewId: id }});
+  test(id: BinaryData, name: String) {
+    this.router.navigate(['/viewCalendar'], { queryParams: { viewId: id, viewName: name }});
   }
 }

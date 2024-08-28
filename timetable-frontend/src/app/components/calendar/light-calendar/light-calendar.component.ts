@@ -14,7 +14,7 @@ import { appointmentSerive } from '../../../service/appointmentService';
 export class LightCalendarComponent implements OnInit{
   constructor(private route:ActivatedRoute, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
 
-  @Input() viewId: BinaryData | undefined;
+  @Input() viewId: string | null = "";
 
   currentDate = new Date();
   currentMonth: string = '';

@@ -14,11 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 export class ViewCalendarComponent implements OnInit{
   constructor(private route:ActivatedRoute) {}
 
-  id: BinaryData | undefined;
+  id: string | null = "";
+
+  name: string | null = "";
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.queryParamMap.get('viewId');
     
-    this.id = this.route.snapshot.queryParamMap.get('viewId')
-    
+    this.name = this.route.snapshot.queryParamMap.get('viewName');    
   }
 }
