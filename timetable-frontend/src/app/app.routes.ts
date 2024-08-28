@@ -6,6 +6,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AppointmentDialogComponent } from './components/appointment-dialog/appointment-dialog.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { FriendlistComponent } from './components/friendlist/friendlist.component';
+import { ViewCalendarComponent } from './components/view-calendar/view-calendar.component';
 
 export const routes: Routes = [
     {    
@@ -47,6 +48,11 @@ export const routes: Routes = [
         path: 'editProfile',
         component: EditProfileComponent,
         title: "Edit Profile"
+    },
+    {
+        path: 'viewCalendar',
+        component: ViewCalendarComponent,
+        title: "View User"
     },
     {
         path:'**',

@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Appointment, User } from '../../interfaces/interfaces';
-import { appointmentSerive } from '../../service/appointmentService';
+import { ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Appointment, User } from '../../../interfaces/interfaces';
+import { appointmentSerive } from '../../../service/appointmentService';
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-light-calendar',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  templateUrl: './light-calendar.component.html',
+  styleUrl: './light-calendar.component.css'
 })
-export class CalendarComponent implements OnInit {
-  constructor(private router:Router, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
+export class LightCalendarComponent implements OnInit{
+  constructor(private route:ActivatedRoute, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
 
-  currentUser: User | undefined;
+  @Input() viewId: BinaryData | undefined;
 
   currentDate = new Date();
   currentMonth: string = '';
@@ -28,12 +28,8 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
     this.renderCalendar(this.currentDate.getMonth(), this.currentDate.getFullYear());
 
-    const userString = localStorage.getItem('currentUser');
-    
-    this.currentUser = JSON.parse(userString!);
-    
     const payload = {
-      userId: this.currentUser?.id,
+      userId: this.viewId,
       month: this.currentMonth,
       year: this.currentYear
     }    
@@ -109,9 +105,5 @@ export class CalendarComponent implements OnInit {
   getMonthName(month: number): string {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return months[month];
-  }
-
-  addAppointment(day: (number | null)): void {
-    this.router.navigate(['/appointmentDialog'], { queryParams: {day: day, month: this.currentMonth, year: this.currentYear}});
   }
 }

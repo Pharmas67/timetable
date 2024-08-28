@@ -7,6 +7,7 @@ import { friendService } from '../../service/friendService';
 import { FriendRequestDialogComponent } from './friend-request-dialog/friend-request-dialog.component';
 import { BlockDialogComponent } from './block-dialog/block-dialog.component';
 import { blockService } from '../../service/blockService';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { blockService } from '../../service/blockService';
 })
 export class FriendlistComponent implements OnInit{
 
-  constructor(private userService:userService, private friendService:friendService,private blockService:blockService) {}
+  constructor(private userService:userService, private friendService:friendService,private blockService:blockService, private router:Router) {}
 
   userArray: User[] = [];
   friendArray: User[] = [];
@@ -115,5 +116,9 @@ export class FriendlistComponent implements OnInit{
 
   openBlockDialog(){
     this.blockDialogVisible = !this.blockDialogVisible;
+  }
+
+  test(id: BinaryData) {
+    this.router.navigate(['/viewCalendar'], { queryParams: { viewId: id }});
   }
 }

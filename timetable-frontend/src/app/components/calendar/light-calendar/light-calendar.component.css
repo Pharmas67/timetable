@@ -1,0 +1,30 @@
+#calendar {
+    font-family: Arial, sans-serif;
+  }
+  
+  #calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #calendar th {
+    text-align: center;
+  }
+  
+  #calendar th,
+  #calendar td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  #calendar td {
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  #calendar .prev,
+  #calendar .next {
+    cursor: pointer;
+    float: left;
+  }
+  
