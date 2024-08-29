@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
+import { Appointment } from "../interfaces/interfaces";
 
 @Injectable({
     providedIn: 'root'
 })
-export class appointmentSerive {
+export class appointmentService {
     constructor() { }
 
     async addCategory(obj: Object): Promise<string> {
@@ -39,11 +40,21 @@ export class appointmentSerive {
 
     async getAppointmentsByMonth(obj: Object): Promise<any> {
         try {
-            const response = await axios.post('http://localhost/mysql/ajax/appointments/getAppointments.php',obj);
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/getAppointmentsbyMonth.php',obj);
             return response.data;
         } catch(e) {
             console.log(e);
             throw e;
+        }
+    }
+
+    async getAppointments(obj: Object): Promise<Array<Appointment>> {
+        try {
+            const response = await axios.post('http://localhost/mysql/ajax/appointments/getAppointments.php',obj);
+            return response.data;
+        } catch(error){
+            console.log(error);
+            throw error;
         }
     }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { appointmentSerive } from '../../service/appointmentService';
+import { appointmentService } from '../../service/appointmentService';
 import { User } from '../../interfaces/interfaces';
 
 @Component({
@@ -12,7 +12,7 @@ import { User } from '../../interfaces/interfaces';
   templateUrl: './appointment-dialog.component.html'
 })
 export class AppointmentDialogComponent implements OnInit{
-  constructor(private route: ActivatedRoute, private appointmentService: appointmentSerive, private router:Router) { }
+  constructor(private route: ActivatedRoute, private appointmentService: appointmentService, private router:Router) { }
 
   targetDay: string | null = '';
   targetMonth: string | null = '';

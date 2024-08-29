@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Appointment, User } from '../../interfaces/interfaces';
-import { appointmentSerive } from '../../service/appointmentService';
+import { appointmentService } from '../../service/appointmentService';
 
 @Component({
   selector: 'app-calendar',
@@ -12,7 +12,7 @@ import { appointmentSerive } from '../../service/appointmentService';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-  constructor(private router:Router, private appointmentService: appointmentSerive, private cdRef:ChangeDetectorRef, private ngZone:NgZone) { }
+  constructor(private router:Router, private appointmentService: appointmentService) { }
 
   currentUser: User | undefined;
 
@@ -22,7 +22,7 @@ export class CalendarComponent implements OnInit {
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calendar: (number | null)[][] = [];
 
-  appointmentsArray:(Appointment)[] = [];
+  appointmentsArray:Appointment[] = [];
   isDataAvailable: boolean = false;
 
   ngOnInit(): void {
@@ -45,7 +45,6 @@ export class CalendarComponent implements OnInit {
   private getAppointmentsbyMonth(payload: Object){
     this.appointmentService.getAppointmentsByMonth(payload)
     .then(response => {
-      
       if(Array.isArray(response) && response.length !== 0){
         response.forEach((item: Appointment) => {
           if(!this.appointmentsArray.some(appointment => appointment.id === item.id)){
@@ -99,11 +98,31 @@ export class CalendarComponent implements OnInit {
   prevMonth(): void {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.renderCalendar(this.currentDate.getMonth(), this.currentDate.getFullYear());
+
+    this.appointmentsArray = [];
+
+    const payload = {
+      userId: this.currentUser?.id,
+      month: this.currentMonth,
+      year: this.currentYear
+    } 
+    
+    this.getAppointmentsbyMonth(payload);
   }
 
   nextMonth(): void {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.renderCalendar(this.currentDate.getMonth(), this.currentDate.getFullYear());
+
+    this.appointmentsArray = [];
+
+    const payload = {
+      userId: this.currentUser?.id,
+      month: this.currentMonth,
+      year: this.currentYear
+    } 
+    
+    this.getAppointmentsbyMonth(payload);
   }
 
   getMonthName(month: number): string {

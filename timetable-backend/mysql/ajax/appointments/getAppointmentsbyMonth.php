@@ -14,11 +14,11 @@ $json_str = file_get_contents('php://input');
 
 $json_obj = json_decode($json_str);
 
-if(!getAppointments($conn,$json_obj->userId) && getAppointments($conn,$json_obj->userId) !== []){
+if(!getAppointmentsbyMonth($conn,$json_obj->userId,$json_obj->month,$json_obj->year) && getAppointmentsbyMonth($conn,$json_obj->userId,$json_obj->month,$json_obj->year) !== []){
     echo json_encode('Something went wrong');
     exit();
 }
 
-$appointments = getAppointments($conn,$json_obj->userId);
+$appointments = getAppointmentsbyMonth($conn,$json_obj->userId,$json_obj->month,$json_obj->year);
 echo json_encode($appointments);
 exit();

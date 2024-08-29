@@ -15,205 +15,205 @@ import { blockService } from '../../../service/blockService';
 })
 export class FriendlistDialogComponent {
 
-constructor(private userService:userService, private friendService:friendService,private blockService:blockService) {}
+  constructor(private userService:userService, private friendService:friendService,private blockService:blockService) {}
 
-@Input() visible: Boolean | undefined;
-@Input() friendArray: User[] = [];
-@Input() blockArray:BlockedRelationship[] = [];
-friendReqs: Friendship[] = [];
+  @Input() visible: Boolean | undefined;
+  @Input() friendArray: User[] = [];
+  @Input() blockArray:BlockedRelationship[] = [];
+  friendReqs: Friendship[] = [];
 
-currentUser: User | undefined;
+  currentUser: User | undefined;
 
-userArray: User[] = [];
-initUserAray: User[] = [];
+  userArray: User[] = [];
+  initUserAray: User[] = [];
 
-warningMessage: string = '';
-warning: boolean = false;
+  warningMessage: string = '';
+  warning: boolean = false;
 
-dialogVisible: Boolean = false;
+  dialogVisible: Boolean = false;
 
-async ngOnInit() {
-  const userString = localStorage.getItem('currentUser');
+  async ngOnInit() {
+    const userString = localStorage.getItem('currentUser');
 
-  this.currentUser = JSON.parse(userString!);
-  
-  await this.fetchUserList();
+    this.currentUser = JSON.parse(userString!);
+    
+    await this.fetchUserList();
 
-  const payload = {
-    userId: this.currentUser?.id
-  }
+    const payload = {
+      userId: this.currentUser?.id
+    }
 
-  this.initUserAray = this.userArray;  
+    this.initUserAray = this.userArray;  
 
-  if(this.userArray.length > 0){    
-    await this.fetchFriendRequests(payload);
+    if(this.userArray.length > 0){    
+      await this.fetchFriendRequests(payload);
 
-    this.userArray = this.userArray.filter((user: User) => user.id !== this.currentUser?.id);
+      this.userArray = this.userArray.filter((user: User) => user.id !== this.currentUser?.id);
 
-    this.userArray = this.userArray.filter((user: User) => {
-      return !this.friendArray.some((friend: User) => friend.id === user.id);
-    });
-
-    await this.fetchBlockUser();
-  }
-  //console.log(this.friendReqs);
-  
-}
-
-searchInput = new FormControl('')
-
-private async fetchUserList(){
-  try {
-    const response = await this.userService.fetchUserList();
-
-    if(Array.isArray(response) && response.length !== 0){
-      const nonFriendUsers = response.filter((item: User) => {
-        return !this.friendArray.some((element : User) => item.id === element.id)
+      this.userArray = this.userArray.filter((user: User) => {
+        return !this.friendArray.some((friend: User) => friend.id === user.id);
       });
 
-      this.userArray.push(...nonFriendUsers);
+      await this.fetchBlockUser();
     }
-  } catch(error){
-    console.log(error);
-    throw error;
-  }
-}
-
-private async fetchFriendRequests(userObj: Object) {
-  try {
-    const response = await this.friendService.fetchFriendReqs(userObj);
+    //console.log(this.friendReqs);
     
-    if(Array.isArray(response) && response.length !== 0){
-      response.forEach((item: Friendship) => {
-        if(!this.friendReqs.some((element: Friendship) => element.friendId === item.friendId)){
-          this.friendReqs.push(item);
+  }
+
+  searchInput = new FormControl('')
+
+  private async fetchUserList(){
+    try {
+      const response = await this.userService.fetchUserList();
+
+      if(Array.isArray(response) && response.length !== 0){
+        const nonFriendUsers = response.filter((item: User) => {
+          return !this.friendArray.some((element : User) => item.id === element.id)
+        });
+
+        this.userArray.push(...nonFriendUsers);
+      }
+    } catch(error){
+      console.log(error);
+      throw error;
+    }
+  }
+
+  private async fetchFriendRequests(userObj: Object) {
+    try {
+      const response = await this.friendService.fetchFriendReqs(userObj);
+      
+      if(Array.isArray(response) && response.length !== 0){
+        response.forEach((item: Friendship) => {
+          if(!this.friendReqs.some((element: Friendship) => element.friendId === item.friendId)){
+            this.friendReqs.push(item);
+          }
+        });
+      }
+    } catch(error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  private async fetchBlockUser(){
+    try {   
+      this.userArray = this.userArray.filter((user: User) => {
+        return !this.blockArray.some((relationship: BlockedRelationship) => user.id === relationship.blockedId)
+      })    
+
+    } catch(error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  closeDialog(): void {
+    this.visible = !this.visible;
+
+    this.warning = false;
+    this.warningMessage = '';
+  }
+
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    this.searchList(value);
+  }
+
+  searchList(input: String | null): void {
+    if(input){
+      console.log(input);
+
+      this.userArray = this.userArray.filter((item) => item.username == input);
+    }
+  }
+
+  resetSearch(){
+    this.userArray = this.initUserAray;
+
+    this.searchInput.setValue('');
+  }
+
+  async addFriend(targetId: BinaryData){
+    try {
+      const payload = {
+        userId: this.currentUser?.id,
+        friendId: targetId
+      }
+
+      const response = await this.friendService.addFriend(payload);
+
+      if(response == 'invalidRequest'){
+        this.warning = true;
+        this.warningMessage = 'Something went wrong, try again later';
+        return;
+      }
+
+      if(response == 'alreadyExists'){
+        this.warning = true;
+        this.warningMessage = 'You already sent a request';
+        return;
+      }
+
+      if(response == 'validRequest'){
+        const payload = {
+          userId: this.currentUser?.id
         }
-      });
-    }
-  } catch(error) {
-    console.log(error);
-    throw error;
-  }
-}
-
-private async fetchBlockUser(){
-  try {   
-    this.userArray = this.userArray.filter((user: User) => {
-      return !this.blockArray.some((relationship: BlockedRelationship) => user.id === relationship.blockedId)
-    })    
-
-  } catch(error) {
-    console.log(error);
-    throw error;
-  }
-}
-
-closeDialog(): void {
-  this.visible = !this.visible;
-
-  this.warning = false;
-  this.warningMessage = '';
-}
-
-onInputChange(event: Event): void {
-  const inputElement = event.target as HTMLInputElement;
-  const value = inputElement.value;
-  this.searchList(value);
-}
-
-searchList(input: String | null): void {
-  if(input){
-    console.log(input);
-
-    this.userArray = this.userArray.filter((item) => item.username == input);
-  }
-}
-
-resetSearch(){
-  this.userArray = this.initUserAray;
-
-  this.searchInput.setValue('');
-}
-
-async addFriend(targetId: BinaryData){
-  try {
-    const payload = {
-      userId: this.currentUser?.id,
-      friendId: targetId
-    }
-
-    const response = await this.friendService.addFriend(payload);
-
-    if(response == 'invalidRequest'){
-      this.warning = true;
-      this.warningMessage = 'Something went wrong, try again later';
-      return;
-    }
-
-    if(response == 'alreadyExists'){
-      this.warning = true;
-      this.warningMessage = 'You already sent a request';
-      return;
-    }
-
-    if(response == 'validRequest'){
-      const payload = {
-        userId: this.currentUser?.id
+      
+        this.fetchFriendRequests(payload);
+        this.visible = !this.visible;
+        return;
       }
-    
-      this.fetchFriendRequests(payload);
-      this.visible = !this.visible;
+
       return;
+    } catch(e) {
+      console.log(e);
+      throw e;
     }
-
-    return;
-  } catch(e) {
-    console.log(e);
-    throw e;
   }
-}
 
-checkForRequest(userId: any): boolean {
-  if(this.friendReqs.some((user: Friendship) => user.friendId === userId)){
-    return true;
-  } else {
-    return false;
+  checkForRequest(userId: any): boolean {
+    if(this.friendReqs.some((user: Friendship) => user.friendId === userId)){
+      return true;
+    } else {
+      return false;
+    }
   }
-}
 
-async blockUser(targetId: BinaryData){  
-  try {
-    const payload = {
-      userId: this.currentUser?.id,
-      blockId: targetId
-    }
-
-    const response = await this.blockService.blockUser(payload);
-
-    console.log(response);
-    
-
-    if(response == 'Something went wrong'){
-      this.warning = true;
-      this.warningMessage = 'Something went wrong, try again later';
-      return;
-    }
-
-    if(response == 'Successfull'){
+  async blockUser(targetId: BinaryData){  
+    try {
       const payload = {
-        userId: this.currentUser?.id
+        userId: this.currentUser?.id,
+        blockId: targetId
       }
-    
-      this.fetchFriendRequests(payload);
-      this.visible = !this.visible;
-      location.reload();
-      return;
-    }
 
-    return;
-  } catch(e) {
-    console.log(e);
-    throw e;
+      const response = await this.blockService.blockUser(payload);
+
+      console.log(response);
+      
+
+      if(response == 'Something went wrong'){
+        this.warning = true;
+        this.warningMessage = 'Something went wrong, try again later';
+        return;
+      }
+
+      if(response == 'Successfull'){
+        const payload = {
+          userId: this.currentUser?.id
+        }
+      
+        this.fetchBlockUser();
+        this.visible = !this.visible;
+        location.reload();
+        return;
+      }
+
+      return;
+    } catch(e) {
+      console.log(e);
+      throw e;
+    }
   }
-}
 }

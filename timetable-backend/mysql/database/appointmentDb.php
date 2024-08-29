@@ -71,8 +71,8 @@ function createAppointment($conn,$userId,$name,$startDate,$endDate,$category,$de
 
 }
 
-function getAppointments($conn,$userId,$month,$year){
-    $sql = 'SELECT `id`,`name`,`startDate`,`endDate`,`category`,`description`,`day`,`month`,`year` FROM `appointments` WHERE `userId` = ? AND `month` = ? AND `year` = ?;';
+function getAppointmentsbyMonth($conn,$userId,$month,$year){
+    $sql = 'SELECT * FROM `appointments` WHERE `userId` = ? AND `month` = ? AND `year` = ?;';
     $stmt = $conn->stmt_init();
     if(!($stmt->prepare($sql))){
         return false;
@@ -93,7 +93,35 @@ function getAppointments($conn,$userId,$month,$year){
 
     $stmt->close();
     return $appointments;
-}   
+}
+
+function getAppointments($conn,$userId){
+    $sql = 'SELECT * FROM `appointments` WHERE `userId` = ?';
+
+    $stmt = $conn->stmt_init();
+
+    if(!$stmt->prepare($sql)){
+        return false;
+    }
+
+    $stmt->bind_param('s',$userId);
+
+    if(!$stmt->execute()) {
+        $stmt->close();
+        return false;
+    }
+
+    $obj = $stmt->get_result();
+
+    $appointments = [];
+    
+    while($row = $obj->fetch_assoc()){
+        $appointments [] = $row;
+    }
+
+    $stmt->close();
+    return $appointments;
+}
 
 function updateUserImage($conn,$userId,$imageName){
     $sql = 'UPDATE `users` SET `imageName` = ? WHERE `userId` = ?;';

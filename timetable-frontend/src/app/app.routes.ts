@@ -7,6 +7,7 @@ import { AppointmentDialogComponent } from './components/appointment-dialog/appo
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { FriendlistComponent } from './components/friendlist/friendlist.component';
 import { ViewCalendarComponent } from './components/view-calendar/view-calendar.component';
+import { HistoryComponent } from './components/history/history.component';
 
 export const routes: Routes = [
     {    
@@ -36,7 +37,7 @@ export const routes: Routes = [
     },
     {
         path: 'history',
-        component: AppointmentDialogComponent,
+        component: HistoryComponent,
         title: "History"
     },
     {

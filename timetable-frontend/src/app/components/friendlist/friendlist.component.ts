@@ -9,7 +9,6 @@ import { BlockDialogComponent } from './block-dialog/block-dialog.component';
 import { blockService } from '../../service/blockService';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-friendlist',
   standalone: true,
@@ -101,6 +100,10 @@ export class FriendlistComponent implements OnInit{
             this.blockArray.push(item);  
           }
         })
+
+        this.userArray = this.userArray.filter((user: User) => {
+          return !this.blockArray.some((blockedUser:BlockedRelationship) => user.id === blockedUser.blockedId || user.id === blockedUser.blockerId);
+        })
       }      
     })
   }
@@ -120,5 +123,70 @@ export class FriendlistComponent implements OnInit{
 
   test(id: BinaryData, name: String) {
     this.router.navigate(['/viewCalendar'], { queryParams: { viewId: id, viewName: name }});
+  }
+
+  async blockUser(targetId: BinaryData){  
+    try {
+      const payload = {
+        userId: this.currentUser?.id,
+        blockId: targetId
+      }
+  
+      const response = await this.blockService.blockUser(payload);
+  
+      console.log(response);
+      
+  
+      if(response == 'Something went wrong'){
+        this.warning = true;
+        this.warningMessage = 'Something went wrong, try again later';
+        return;
+      }
+  
+      if(response == 'Successfull'){
+        const payload = {
+          userId: this.currentUser?.id
+        }
+      
+        this.fetchBlocklist(payload);
+        location.reload();
+        return;
+      }
+  
+      return;
+    } catch(e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  async unfriend(targetId: BinaryData) {
+    try {
+      const payload = {
+        userId: this.currentUser?.id,
+        friendId: targetId
+      }
+
+      const response = await this.friendService.removeFriend(payload);
+
+      if(response == 'invalidRequest'){
+        this.warning = true;
+        this.warningMessage = 'Something went wrong, try again later';
+        return;
+      }
+
+      if(response == 'validRequest') {
+        const payload = {
+          userId: this.currentUser?.id
+        }
+
+        this.fetchFriendList(payload);
+        location.reload();
+        return;
+      }
+    } catch(error){
+      console.log(error);
+      throw error;
+    }
   }
 }
